@@ -10,16 +10,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.estechapp.databinding.ActivityMainBinding
+import com.example.estechapp.databinding.ProfesorMainBinding
 
-class MainActivity : AppCompatActivity() {
+class ProfesorActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ProfesorMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ProfesorMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_grupos, R.id.navigation_fichaje, R.id.navigation_tutorias
+                R.id.navigation_grupos, R.id.navigation_fichaje, R.id.navigation_practica
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

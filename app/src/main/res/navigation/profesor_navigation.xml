@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_fichaje" />
 
     <fragment
-        android:id="@+id/navigation_tutorias"
+        android:id="@+id/navigation_practica"
         android:name="com.example.estechapp.ui.notifications.TutoriasFragment"
         android:label="@string/tutorias"
         tools:layout="@layout/fragment_grupos" />
