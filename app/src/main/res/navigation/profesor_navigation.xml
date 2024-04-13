@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_fichaje">
+
+    <fragment
+        android:id="@+id/navigation_grupos"
+        android:name="com.example.estechapp.ui.home.GruposFragment"
+        android:label="@string/grupos"
+        tools:layout="@layout/fragment_tutorias" />
+
+    <fragment
+        android:id="@+id/navigation_fichaje"
+        android:name="com.example.estechapp.ui.dashboard.FichajeFragment"
+        android:label="@string/fichaje"
+        tools:layout="@layout/fragment_fichaje" />
+
+    <fragment
+        android:id="@+id/navigation_practica"
+        android:name="com.example.estechapp.ui.notifications.TutoriasFragment"
+        android:label="@string/tutorias"
+        tools:layout="@layout/fragment_grupos" />
+</navigation>
