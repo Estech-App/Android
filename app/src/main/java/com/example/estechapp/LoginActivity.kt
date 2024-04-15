@@ -6,17 +6,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.estechapp.databinding.LoginMainBinding
-import com.example.estechapp.ui.ViewModel
+import com.example.estechapp.ui.MyViewModel
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.estechapp.data.Repository
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginMainBinding
 
-    private val viewModel by viewModels<ViewModel>()
+    private val viewModel by viewModels<MyViewModel>{
+        MyViewModel.MyViewModelFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

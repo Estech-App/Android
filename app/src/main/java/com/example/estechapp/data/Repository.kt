@@ -5,7 +5,7 @@ import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.network.RetrofitHelper
 
-class Repository(/*val context: Context*/) {
+class Repository(val context: Context) {
 
     private val retrofit = RetrofitHelper.getRetrofit()
 

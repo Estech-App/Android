@@ -14,9 +14,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ViewModel(/*val context: Context*/): ViewModel() {
+class MyViewModel(val context: Context): ViewModel() {
 
-    private val repository = Repository(/*context*/)
+    private val repository = Repository(context)
 
     val liveDataLogin = MutableLiveData<DataLoginResponse>()
     val liveDataLoginError = MutableLiveData<String>()
