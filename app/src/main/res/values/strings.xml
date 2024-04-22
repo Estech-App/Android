@@ -8,4 +8,5 @@
     <string name="Tutorias">Tutorias\n</string>
     <string name="grupos">Grupos</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_alumno">AlumnoActivity</string>
 </resources>

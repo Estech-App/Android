@@ -14,9 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EstechApp"
         tools:targetApi="31">
-        <activity
-            android:name=".AlumnoActivity"
-            android:exported="false" />
+        <activity android:name=".AlumnoActivity" />
         <activity
             android:name=".ProfesorActivity"
             android:exported="false"

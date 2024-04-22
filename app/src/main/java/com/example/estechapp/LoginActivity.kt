@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
             if (user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(applicationContext, "Campos vacios", Toast.LENGTH_SHORT).show();
             } else {
-                val intent = Intent(this, ProfesorActivity::class.java)
+                val intent = Intent(this, AlumnoActivity::class.java)
                 startActivity(intent)
             }
         }
