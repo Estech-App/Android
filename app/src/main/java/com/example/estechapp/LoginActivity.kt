@@ -62,15 +62,21 @@ class LoginActivity : AppCompatActivity() {
                         val editor = pref.edit()
                         editor.putString("mail", user)
                         editor.putString("token", response.token)
+                        editor.commit()
                         val mail = pref.getString("mail", "")
                         val token = pref.getString("token", "")
                         if (token != null && mail != null) {
-                            viewModel.postEmail(token, mail)
+                            viewModel.postEmail("Bearer $token", mail)
 
-                            viewModel.liveDataUserInfo.observe(this, Observer { response ->
-                                editor.putString("username", response.name)
-                                editor.putString("lastname", response.lastname)
-                                editor.putInt("id", response.id)
+                            viewModel.liveDataUserInfo.observe(this, Observer { response2 ->
+                                editor.putString("username", response2.name)
+                                editor.putString("lastname", response2.lastname)
+                                editor.putInt("id", response2.id)
+                                editor.commit()
+                            })
+
+                            viewModel.liveDataUserInfoError.observe(this, Observer { error2 ->
+                                Toast.makeText(applicationContext, error2, Toast.LENGTH_SHORT).show()
                             })
                         }
                         Toast.makeText(applicationContext, response.message, Toast.LENGTH_SHORT).show()
@@ -80,15 +86,21 @@ class LoginActivity : AppCompatActivity() {
                         val editor = pref.edit()
                         editor.putString("mail", user)
                         editor.putString("token", response.token)
+                        editor.commit()
                         val mail = pref.getString("mail", "")
                         val token = pref.getString("token", "")
                         if (token != null && mail != null) {
-                            viewModel.postEmail(token, mail)
+                            viewModel.postEmail("Bearer $token", mail)
 
-                            viewModel.liveDataUserInfo.observe(this, Observer { response ->
-                                editor.putString("username", response.name)
-                                editor.putString("lastname", response.lastname)
-                                editor.putInt("id", response.id)
+                            viewModel.liveDataUserInfo.observe(this, Observer { response2 ->
+                                editor.putString("username", response2.name)
+                                editor.putString("lastname", response2.lastname)
+                                editor.putInt("id", response2.id)
+                                editor.commit()
+                            })
+
+                            viewModel.liveDataUserInfoError.observe(this, Observer { error2 ->
+                                Toast.makeText(applicationContext, error2, Toast.LENGTH_SHORT).show()
                             })
                         }
                         Toast.makeText(applicationContext, response.message, Toast.LENGTH_SHORT).show()

@@ -78,4 +78,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/entrada_icon" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
