@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_grupos"
-        android:name="com.example.estechapp.ui.home.GruposFragment"
+        android:name="com.example.estechapp.ui.profesorUI.grupos.GruposFragment"
         android:label="@string/grupos"
         tools:layout="@layout/fragment_tutorias" />
 
     <fragment
         android:id="@+id/navigation_fichaje"
-        android:name="com.example.estechapp.ui.dashboard.FichajeFragment"
+        android:name="com.example.estechapp.ui.profesorUI.fichaje.FichajeFragment"
         android:label="@string/fichaje"
         tools:layout="@layout/fragment_fichaje" />
 
     <fragment
         android:id="@+id/navigation_practica"
-        android:name="com.example.estechapp.ui.notifications.TutoriasFragment"
+        android:name="com.example.estechapp.ui.profesorUI.tutorias.TutoriasFragment"
         android:label="@string/tutorias"
         tools:layout="@layout/fragment_grupos" />
 </navigation>

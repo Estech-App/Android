@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/alumno_navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_tutorias_alumno">
 
+    <fragment
+        android:id="@+id/navigation_tutorias_alumno"
+        android:name="com.example.estechapp.ui.alumnoUI.tutorias.TutoriasFragment"
+        android:label="tutorias"
+        tools:layout="@layout/fragment_tutorias_alumno" />
+
+    <fragment
+        android:id="@+id/navigation_practicaLibre"
+        android:name="com.example.estechapp.ui.alumnoUI.practica.PracticaFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_practica" />
+
+    <fragment
+        android:id="@+id/navigation_grupo_alumno"
+        android:name="com.example.estechapp.ui.alumnoUI.grupo.GrupoFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_grupo_alumno" />
+    <fragment
+        android:id="@+id/navigation_compartido"
+        android:name="com.example.estechapp.ui.alumnoUI.grupo.CompartidoFragment"
+        android:label="fragment_compartido"
+        tools:layout="@layout/fragment_compartido" />
 </navigation>
