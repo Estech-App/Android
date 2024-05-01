@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, response.message, Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProfesorActivity::class.java)
                     startActivity(intent)
+                        finish()
                     } else if (response.roles?.get(0)?.authority == "ROLE_STUDENT") {
                         val editor = pref.edit()
                         editor.putString("mail", user)

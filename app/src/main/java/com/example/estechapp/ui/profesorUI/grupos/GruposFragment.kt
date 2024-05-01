@@ -131,7 +131,7 @@ class GruposFragment : Fragment() {
                         }
                     }
 
-                    binding.textView8.text = "$diaSemanaN, $diaMes, $mesN"
+                    binding.fecha.text = "$diaSemanaN, $diaMes, $mesN"
 
                     handler.postDelayed(this, 1000)
 

@@ -61,7 +61,7 @@ class MyViewModel(val context: Context): ViewModel() {
     }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun postCheckIn(token: String, fecha: Date, checkIn: Boolean, id: Int, name: String, lastname: String) {
+    fun postCheckIn(token: String, fecha: String, checkIn: Boolean, id: Int, name: String, lastname: String) {
         val user = User(id, name, lastname)
         val checkInModel = DataCheckInModel(fecha, checkIn, user)
         CoroutineScope(Dispatchers.IO).launch {
