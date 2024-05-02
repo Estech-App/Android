@@ -13,9 +13,11 @@ class Repository(val context: Context) {
 
     suspend fun postLogin(loginModel: DataLoginModel) = retrofit.login(loginModel)
 
-    suspend fun postEmail(token: String, emailModel: DataEmailModel) = retrofit.userInfo(token, emailModel)
+    suspend fun postEmail(token: String, emailModel: DataEmailModel) =
+        retrofit.userInfo(token, emailModel)
 
-    suspend fun postCheckIn(token: String, checkInModel: DataCheckInModel) = retrofit.checkIn(token, checkInModel)
+    suspend fun postCheckIn(token: String, checkInModel: DataCheckInModel) =
+        retrofit.checkIn(token, checkInModel)
 
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
 

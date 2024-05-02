@@ -1,18 +1,25 @@
 package com.example.estechapp.ui.profesorUI.grupos
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentGruposBinding
 import java.util.Calendar
 
 class GruposFragment : Fragment() {
 
     private var _binding: FragmentGruposBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -38,8 +45,6 @@ class GruposFragment : Fragment() {
                 _binding?.let { binding ->
 
                     val calendar = Calendar.getInstance()
-
-                    //calendar.add(Calendar.DAY_OF_YEAR, 1)
 
                     val diaMes = calendar.get(Calendar.DAY_OF_MONTH)
 
@@ -140,6 +145,40 @@ class GruposFragment : Fragment() {
         }
 
         handler.post(runnable)
+
+        /*val builder = AlertDialog.Builder(requireContext())
+        val view = layoutInflater.inflate(R.layout.alert, null)
+        builder.setView(view)
+        val dialog = builder.create()
+        dialog.show()
+        val cancelar = view.findViewById<Button>(R.id.button)
+        val enviar = view.findViewById<Button>(R.id.button4)
+        val titulo = view.findViewById<TextView>(R.id.textView7)
+        val mensaje = view.findViewById<TextView>(R.id.textView15)
+        titulo.setText("Alert")
+        mensaje.setText("¿Desea mandar un mail al alumno Iñigo Acosta Conde?")
+        enviar.setText("Enviar")
+        cancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+        enviar.setOnClickListener {
+
+            val builder2 = AlertDialog.Builder(requireContext())
+            val view2 = layoutInflater.inflate(R.layout.alert_response, null)
+            val mensaje = view2.findViewById<TextView>(R.id.textView16)
+            mensaje.setText("Mensaje enviado con exito!")
+            builder2.setView(view2)
+            val dialog2 = builder2.create()
+            dialog2.show()
+            dialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (dialog2.isShowing) {
+                    dialog2.dismiss()
+                }
+            }, 5000)
+            dialog.dismiss()
+
+        }*/
     }
 
     override fun onDestroyView() {

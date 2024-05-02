@@ -9,28 +9,31 @@ import com.example.estechapp.R
 import com.example.estechapp.databinding.ItemTutoriasHotBinding
 import com.example.estechapp.ui.profesorUI.Tutoria
 
-class TutoriasHotAdapter(private val tutorias: List<Tutoria>) : RecyclerView.Adapter<TutoriasHotAdapter.ViewHolder>() {
+class TutoriasHotAdapter(private val tutorias: List<Tutoria>) :
+    RecyclerView.Adapter<TutoriasHotAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemTutoriasHotBinding): RecyclerView.ViewHolder(binding.root){
+    class ViewHolder(val binding: ItemTutoriasHotBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(tutoria: Tutoria){
+        fun bind(tutoria: Tutoria) {
             binding.nombre.text = tutoria.alumno
+            binding.curso.text = tutoria.curso
+            binding.aula.text = tutoria.aula
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding  = ItemTutoriasHotBinding.inflate(
+        val binding = ItemTutoriasHotBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return  ViewHolder(binding)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount() = tutorias.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tutorias[position])
-        if (position % 2 == 0){
+        if (position % 2 == 0) {
             val gris = ContextCompat.getColor(holder.itemView.context, R.color.gris)
             holder.binding.bg.setBackgroundColor(gris)
         } else {

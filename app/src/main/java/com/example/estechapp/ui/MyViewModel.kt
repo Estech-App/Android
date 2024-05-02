@@ -11,16 +11,13 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
-import com.example.estechapp.data.models.DataTimeTableModel
-import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
 
-class MyViewModel(val context: Context): ViewModel() {
+class MyViewModel(val context: Context) : ViewModel() {
 
     private val repository = Repository(context)
 
@@ -28,8 +25,8 @@ class MyViewModel(val context: Context): ViewModel() {
     val liveDataLoginError = MutableLiveData<String>()
     val liveDataUserInfo = MutableLiveData<DataUserInfoResponse>()
     val liveDataUserInfoError = MutableLiveData<String>()
-    val liveDataCheckIn = MutableLiveData<DataCheckInResponse>()
-    val liveDataCheckInError = MutableLiveData<String>()
+    val liveDataCheckIn = SingleLiveEvent<DataCheckInResponse>()
+    val liveDataCheckInError = SingleLiveEvent<String>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
 
     @SuppressLint("NullSafeMutableLiveData")
@@ -40,8 +37,6 @@ class MyViewModel(val context: Context): ViewModel() {
             if (response.isSuccessful) {
                 val myResponse = response.body()
                 liveDataLogin.postValue(myResponse)
-            } else {
-                liveDataLoginError.postValue("El correo o la contraseña son incorrectos")
             }
         }
     }
@@ -61,7 +56,14 @@ class MyViewModel(val context: Context): ViewModel() {
     }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun postCheckIn(token: String, fecha: String, checkIn: Boolean, id: Int, name: String, lastname: String) {
+    fun postCheckIn(
+        token: String,
+        fecha: String,
+        checkIn: Boolean,
+        id: Int,
+        name: String,
+        lastname: String
+    ) {
         val user = User(id, name, lastname)
         val checkInModel = DataCheckInModel(fecha, checkIn, user)
         CoroutineScope(Dispatchers.IO).launch {
@@ -85,7 +87,7 @@ class MyViewModel(val context: Context): ViewModel() {
         }
     }*/
 
-    class MyViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+    class MyViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return modelClass.getConstructor(Context::class.java).newInstance(context)
         }
