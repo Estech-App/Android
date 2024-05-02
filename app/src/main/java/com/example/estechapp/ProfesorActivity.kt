@@ -39,13 +39,14 @@ class ProfesorActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener{
+        navController.addOnDestinationChangedListener(object :
+            NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(
                 controller: NavController,
                 destination: NavDestination,
                 arguments: Bundle?
             ) {
-                if (destination?.id == R.id.navigation_fichaje){
+                if (destination?.id == R.id.navigation_fichaje) {
                     binding.toolbar.isVisible = false
                 } else {
                     binding.toolbar.isVisible = true

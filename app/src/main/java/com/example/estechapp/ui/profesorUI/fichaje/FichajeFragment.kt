@@ -3,6 +3,7 @@ package com.example.estechapp.ui.profesorUI.fichaje
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,17 +26,18 @@ import java.util.*
 import java.text.SimpleDateFormat
 import androidx.lifecycle.Observer
 import com.example.estechapp.R
+import com.example.estechapp.ui.profesorUI.Tutoria
+import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
 
 class FichajeFragment : Fragment() {
 
     private var _binding: FragmentFichajeBinding? = null
 
-    private val viewModel by viewModels<MyViewModel>{
+    private val viewModel by viewModels<MyViewModel> {
         MyViewModel.MyViewModelFactory(requireContext())
     }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -47,9 +50,17 @@ class FichajeFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerTutoriasHot.adapter = TutoriasHotAdapter(
+            listOf(
+                Tutoria("Ramon", "DAM 2º", "Aula DAM"),
+                Tutoria("Juan", "DOWN 2º", "Aula DOWN"),
+                Tutoria("Fernando", "DAM 2º", "Aula DAM")
+            )
+        )
 
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
         val user = pref.getString("username", "")
@@ -161,6 +172,106 @@ class FichajeFragment : Fragment() {
 
                     binding.textView6.text = horaMinutos
 
+                    val checkIn = pref.getBoolean(
+                        "checking",
+                        true
+                    ) // Neceseitor un getallchekingsby(id) y pikear el ultimo para saber cual es. entrar o salir.
+
+                    if (checkIn) {
+                        binding.imageButton.setImageResource(R.drawable.entrada_icon)
+
+                        binding.imageButton.setOnClickListener {
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                            val calendar = Calendar.getInstance()
+                            val Date = dateFormat.format(calendar.time)
+
+                            val token = pref.getString("token", "")
+                            val id = pref.getInt("id", 0)
+                            val name = pref.getString("username", "")
+                            val lastname = pref.getString("lastname", "")
+
+                            if (token != null && name != null && lastname != null) {
+
+                                val builder = AlertDialog.Builder(requireContext())
+                                val view = layoutInflater.inflate(R.layout.alert, null)
+                                builder.setView(view)
+                                val dialog = builder.create()
+                                dialog.show()
+                                val cancelar = view.findViewById<Button>(R.id.button)
+                                val registrar = view.findViewById<Button>(R.id.button4)
+                                val titulo = view.findViewById<TextView>(R.id.textView7)
+                                val mensaje = view.findViewById<TextView>(R.id.textView15)
+                                titulo.setText("Alert")
+                                mensaje.setText("¿Esta seguro de registrar esta entrada del fichaje?")
+                                cancelar.setOnClickListener {
+                                    dialog.dismiss()
+                                }
+                                registrar.setOnClickListener {
+
+                                    viewModel.postCheckIn(
+                                        "Bearer $token",
+                                        Date,
+                                        checkIn,
+                                        id,
+                                        name,
+                                        lastname
+                                    )
+
+                                    dialog.dismiss()
+
+                                }
+                            }
+                        }
+
+                    } else {
+
+                        binding.imageButton.setImageResource(R.drawable.salida_icon)
+
+                        binding.imageButton.setOnClickListener {
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                            val calendar = Calendar.getInstance()
+                            val Date = dateFormat.format(calendar.time)
+
+                            val token = pref.getString("token", "")
+                            val id = pref.getInt("id", 0)
+                            val name = pref.getString("username", "")
+                            val lastname = pref.getString("lastname", "")
+
+                            if (token != null && name != null && lastname != null) {
+
+                                val builder = AlertDialog.Builder(requireContext())
+                                val view = layoutInflater.inflate(R.layout.alert, null)
+                                builder.setView(view)
+                                val dialog = builder.create()
+                                dialog.show()
+                                val cancelar = view.findViewById<Button>(R.id.button)
+                                val registrar = view.findViewById<Button>(R.id.button4)
+                                val titulo = view.findViewById<TextView>(R.id.textView7)
+                                val mensaje = view.findViewById<TextView>(R.id.textView15)
+                                titulo.setText("Alert")
+                                mensaje.setText("¿Esta seguro de registrar la salida?")
+                                cancelar.setOnClickListener {
+                                    dialog.dismiss()
+                                }
+                                registrar.setOnClickListener {
+
+                                    viewModel.postCheckIn(
+                                        "Bearer $token",
+                                        Date,
+                                        checkIn,
+                                        id,
+                                        name,
+                                        lastname
+                                    )
+
+                                    dialog.dismiss()
+
+                                }
+                            }
+                        }
+
+                    }
+
                     handler.postDelayed(this, 1000)
 
                 }
@@ -169,34 +280,13 @@ class FichajeFragment : Fragment() {
 
         handler.post(runnable)
 
-        binding.imageButton.setOnClickListener {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-            val calendar = Calendar.getInstance()
-            //dateFormat.timeZone = TimeZone.getTimeZone("GMT+2")
-            val Date = dateFormat.format(calendar.time)
-            //val date = dateFormat.parse(formatDate)
-
-            val token = pref.getString("token", "")
-            val id = pref.getInt("id", 0)
-            val name = pref.getString("username", "")
-            val lastname = pref.getString("lastname", "")
-
-            if (token != null && Date != null && name != null && lastname != null) {
-
-                viewModel.postCheckIn("Bearer $token", Date, true, id, name, lastname)
-
-                viewModel.liveDataCheckIn.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(activity, "Hola", Toast.LENGTH_SHORT).show()
-                })
-
-                viewModel.liveDataCheckInError.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(activity, "Mal", Toast.LENGTH_SHORT).show()
-                })
-            }
-        }
-
         binding.login.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
+            /*val builder = AlertDialog.Builder(requireContext())
+            val view = layoutInflater.inflate(R.layout.alert3, null)
+            builder.setView(view)
+            val dialog = builder.create()
+            dialog.show()*/
+            /*val builder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.dialog, null)
 
             builder.setView(view)
@@ -212,10 +302,20 @@ class FichajeFragment : Fragment() {
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
 
-                val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Aquí puedes manejar la fecha seleccionada
-                    Toast.makeText(requireContext(), "$dayOfMonth/${monthOfYear+1}/$year", Toast.LENGTH_LONG).show()
-                }, year, month, day)
+                val dpd = DatePickerDialog(
+                    requireContext(),
+                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                        // Aquí puedes manejar la fecha seleccionada
+                        Toast.makeText(
+                            requireContext(),
+                            "$dayOfMonth/${monthOfYear + 1}/$year",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    },
+                    year,
+                    month,
+                    day
+                )
 
                 dpd.show() // Esto mostrará el DatePickerDialog
             }
@@ -224,7 +324,8 @@ class FichajeFragment : Fragment() {
             val elementos = arrayOf("Elige", "Elemento 1", "Elemento 2", "Elemento 3")
 
 // Crea un ArrayAdapter usando el array de strings y el layout predeterminado del Spinner
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, elementos)
+            val adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, elementos)
 
 // Especifica el layout a usar cuando aparece la lista de opciones
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -235,10 +336,19 @@ class FichajeFragment : Fragment() {
 
 // Define el comportamiento cuando se selecciona un elemento
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
                     val elementoSeleccionado = parent.getItemAtPosition(position) as String
                     // Aquí puedes manejar el elemento seleccionado
-                    Toast.makeText(requireContext(), "Seleccionaste: $elementoSeleccionado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Seleccionaste: $elementoSeleccionado",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -250,6 +360,20 @@ class FichajeFragment : Fragment() {
 
             button1.setOnClickListener {
 
+            val tpd = TimePickerDialog(
+                requireContext(),
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    // Aquí puedes manejar la hora seleccionada
+                    Toast.makeText(
+                        requireContext(),
+                        "$hourOfDay:$minute",
+                        Toast.LENGTH_LONG
+                    ).show()
+                },
+                12, 0, true
+            )
+            tpd.show()
+
                 dialog.dismiss()
             }
 
@@ -259,7 +383,10 @@ class FichajeFragment : Fragment() {
                 dialog.dismiss()
 
                 val builder2 = AlertDialog.Builder(requireContext())
-                val view2 = layoutInflater.inflate(R.layout.dialog2, null) // Asegúrate de cambiar esto al layout correcto
+                val view2 = layoutInflater.inflate(
+                    R.layout.dialog2,
+                    null
+                ) // Asegúrate de cambiar esto al layout correcto
 
                 builder2.setView(view2)
 
@@ -272,8 +399,51 @@ class FichajeFragment : Fragment() {
                         dialog2.dismiss()
                     }
                 }, 3000) // 3000 milisegundos equivalen a 3 segundos
-            }
+            }*/
         }
+
+        viewModel.liveDataCheckIn.observe(viewLifecycleOwner, Observer {
+            val checkIn = pref.getBoolean("checking", true)
+            val builder2 = AlertDialog.Builder(requireContext())
+            val view2 = layoutInflater.inflate(R.layout.alert_response, null)
+            if (checkIn) {
+                val editor = pref.edit()
+                editor.putBoolean("checking", false)
+                editor.commit()
+            } else {
+                val editor = pref.edit()
+                editor.putBoolean("checking", true)
+                editor.commit()
+                val textview = view2.findViewById<TextView>(R.id.textView16)
+                textview.setText("Salida registrada con exito!")//viva el betis
+            }
+            builder2.setView(view2)
+            val dialog2 = builder2.create()
+            dialog2.show()
+            dialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (dialog2.isShowing) {
+                    dialog2.dismiss()
+                }
+            }, 5000)
+        })
+
+        viewModel.liveDataCheckInError.observe(viewLifecycleOwner, Observer {
+            val builder2 = AlertDialog.Builder(requireContext())
+            val view2 = layoutInflater.inflate(R.layout.alert_response, null)
+            val textview = view2.findViewById<TextView>(R.id.textView16)
+            textview.setBackgroundResource(R.drawable.rounded_textview_error)
+            textview.text = "Se ha producido un error al registrar la entrada!"
+            builder2.setView(view2)
+            val dialog2 = builder2.create()
+            dialog2.show()
+            dialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (dialog2.isShowing) {
+                    dialog2.dismiss()
+                }
+            }, 5000)
+        })
     }
 
     override fun onDestroyView() {
