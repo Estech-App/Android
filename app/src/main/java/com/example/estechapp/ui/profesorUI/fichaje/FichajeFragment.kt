@@ -21,6 +21,7 @@ import com.example.estechapp.ui.profesorUI.Tutoria
 class FichajeFragment : Fragment() {
 
     private var _binding: FragmentFichajeBinding? = null
+    private val binding get() = _binding!!
 
     //private val viewModel by viewModels<MyViewModel>()
 
@@ -28,9 +29,6 @@ class FichajeFragment : Fragment() {
         MyViewModel.MyViewModelFactory(requireContext())
     }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
