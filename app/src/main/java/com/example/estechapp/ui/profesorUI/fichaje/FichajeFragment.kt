@@ -2,33 +2,28 @@ package com.example.estechapp.ui.profesorUI.fichaje
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.estechapp.databinding.FragmentFichajeBinding
-import com.example.estechapp.ui.MyViewModel
-import java.util.Calendar
-import java.util.*
-import java.text.SimpleDateFormat
 import androidx.lifecycle.Observer
 import com.example.estechapp.R
+import com.example.estechapp.databinding.FragmentFichajeBinding
+import com.example.estechapp.ui.MyViewModel
 import com.example.estechapp.ui.profesorUI.Tutoria
-import android.graphics.drawable.ColorDrawable
-import android.graphics.Color
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 
 class FichajeFragment : Fragment() {
 
@@ -74,8 +69,11 @@ class FichajeFragment : Fragment() {
                 _binding?.let { binding ->
 
                     val calendar = Calendar.getInstance()
+                    val tz = TimeZone.getTimeZone("GMT+2")
+                    calendar.setTimeZone(tz)
 
                     val formatoHora = SimpleDateFormat("HH:mm", Locale.US)
+                    formatoHora.timeZone = tz
                     val horaMinutos = formatoHora.format(calendar.time)
 
                     val diaMes = calendar.get(Calendar.DAY_OF_MONTH)
@@ -181,8 +179,11 @@ class FichajeFragment : Fragment() {
                         binding.imageButton.setImageResource(R.drawable.entrada_icon)
 
                         binding.imageButton.setOnClickListener {
-                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
                             val calendar = Calendar.getInstance()
+                            val tz = TimeZone.getTimeZone("GMT+2")
+                            calendar.setTimeZone(tz)
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                            dateFormat.timeZone = tz
                             val Date = dateFormat.format(calendar.time)
 
                             val token = pref.getString("token", "")
@@ -228,8 +229,11 @@ class FichajeFragment : Fragment() {
                         binding.imageButton.setImageResource(R.drawable.salida_icon)
 
                         binding.imageButton.setOnClickListener {
-                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
                             val calendar = Calendar.getInstance()
+                            val tz = TimeZone.getTimeZone("GMT+2")
+                            calendar.setTimeZone(tz)
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                            dateFormat.timeZone = tz
                             val Date = dateFormat.format(calendar.time)
 
                             val token = pref.getString("token", "")
