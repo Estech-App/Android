@@ -19,7 +19,6 @@ import java.util.Calendar
 class GruposFragment : Fragment() {
 
     private var _binding: FragmentGruposBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -37,6 +36,10 @@ class GruposFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerManana.adapter = MananaHorarioAdapter()
+        binding.recyclerTarde.adapter = TardeHorarioAdapter()
+        binding.recyclerGrupos.adapter = GrupoAdapter()
 
         val handler = Handler(Looper.getMainLooper())
         val runnable = object : Runnable {
@@ -136,7 +139,7 @@ class GruposFragment : Fragment() {
                         }
                     }
 
-                    binding.fecha.text = "$diaSemanaN, $diaMes, $mesN"
+                    binding.textView8.text = "$diaSemanaN, $diaMes, $mesN"
 
                     handler.postDelayed(this, 1000)
 
