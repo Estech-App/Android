@@ -42,5 +42,4 @@ interface ApiService {
     suspend fun timeTable(
         @Header("Authorization") token: String
     ) : Response<DataTimeTableResponse>*/
-
 }

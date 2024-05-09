@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_tutorias_alumno"
-        android:name="com.example.estechapp.ui.alumnoUI.tutorias.TutoriasFragment"
+        android:name="com.example.estechapp.ui.alumnoUI.tutorias.TutoriasAlumnoFragment"
         android:label="tutorias"
         tools:layout="@layout/fragment_tutorias_alumno" />
 

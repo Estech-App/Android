@@ -19,6 +19,7 @@ class TutoriasFragment : Fragment() {
 
     private var _binding: FragmentTutoriasBinding? = null
 
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -30,6 +31,7 @@ class TutoriasFragment : Fragment() {
     ): View {
 
         _binding = FragmentTutoriasBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         return binding.root
     }
@@ -70,7 +72,6 @@ class TutoriasFragment : Fragment() {
             dialog.dismiss()
         }*/
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

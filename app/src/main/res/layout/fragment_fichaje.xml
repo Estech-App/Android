@@ -99,8 +99,8 @@
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Hoy tienes las siguientes tutorias:"
                 android:textColor="#000000"
                 android:textSize="20dp"
@@ -109,16 +109,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
                 android:hapticFeedbackEnabled="true"
                 app:cardBackgroundColor="#131313"
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -126,10 +125,11 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/cardView2"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -155,8 +155,8 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Horario de hoy"
                 android:textColor="#000000"
                 android:textSize="20dp"
@@ -168,7 +168,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="10dp"
                 app:cardBackgroundColor="#000000"
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -179,13 +179,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                app:layout_constraintStart_toStartOf="@+id/cardView3"
                 app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             </androidx.recyclerview.widget.RecyclerView>
@@ -194,23 +192,21 @@
                 android:id="@+id/cardView5"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
                 app:cardBackgroundColor="#000000"
                 app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+                app:layout_constraintStart_toStartOf="@+id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView5"
+                app:layout_constraintStart_toStartOf="@+id/cardView5"
                 app:layout_constraintTop_toBottomOf="@+id/cardView5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
