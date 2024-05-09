@@ -37,9 +37,9 @@ class GruposFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerManana.adapter = MananaHorarioAdapter()
+        /*binding.recyclerManana.adapter = MananaHorarioAdapter()
         binding.recyclerTarde.adapter = TardeHorarioAdapter()
-        binding.recyclerGrupos.adapter = GrupoAdapter()
+        binding.recyclerGrupos.adapter = GrupoAdapter()*/
 
         val handler = Handler(Looper.getMainLooper())
         val runnable = object : Runnable {

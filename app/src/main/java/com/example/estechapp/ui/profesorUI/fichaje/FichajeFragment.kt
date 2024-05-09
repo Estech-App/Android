@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,15 +25,8 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.estechapp.databinding.FragmentFichajeBinding
-import com.example.estechapp.ui.MyViewModel
-import java.util.Calendar
 import java.util.*
-import java.text.SimpleDateFormat
-import androidx.lifecycle.Observer
-import com.example.estechapp.ui.profesorUI.Tutoria
 
 class FichajeFragment : Fragment() {
 

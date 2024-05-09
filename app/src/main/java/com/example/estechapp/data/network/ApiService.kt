@@ -42,25 +42,4 @@ interface ApiService {
     suspend fun timeTable(
         @Header("Authorization") token: String
     ) : Response<DataTimeTableResponse>*/
-
-    @Headers("Content-Type: application/json")
-    @POST("/api/user/user-info")
-    suspend fun userInfo(
-        @Header("Authorization") token: String,
-        @Body emailModel: DataEmailModel
-    ) : Response<DataUserInfoResponse>
-
-    @Headers("Content-Type: application/json")
-    @POST("/api/check-in/new")
-    suspend fun checkIn(
-        @Header("Authorization") token: String,
-        @Body checkInModel: DataCheckInModel
-    ) : Response<DataCheckInResponse>
-
-    /*@Headers("Content-Type: application/json")
-    @GET("/api/time-table")
-    suspend fun timeTable(
-        @Header("Authorization") token: String
-    ) : Response<DataTimeTableResponse>*/
-
 }

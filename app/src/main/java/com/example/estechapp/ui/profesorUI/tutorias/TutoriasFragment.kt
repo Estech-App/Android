@@ -1,4 +1,4 @@
-package com.example.estechapp.ui.alumnoUI.tutorias
+package com.example.estechapp.ui.profesorUI.tutorias
 
 import android.app.AlertDialog
 import android.graphics.Color
@@ -14,16 +14,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentTutoriasBinding
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.estechapp.databinding.FragmentTutoriasAlumnoBinding
 
 class TutoriasFragment : Fragment() {
 
-    private var _binding: FragmentTutoriasAlumnoBinding? = null
+    private var _binding: FragmentTutoriasBinding? = null
 
 
     // This property is only valid between onCreateView and
@@ -36,7 +30,7 @@ class TutoriasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentTutoriasAlumnoBinding.inflate(inflater, container, false)
+        _binding = FragmentTutoriasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return binding.root
