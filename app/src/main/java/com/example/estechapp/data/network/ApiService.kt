@@ -14,6 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -36,6 +37,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body checkInModel: DataCheckInModel
     ): Response<DataCheckInResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/check-in/teacher-checkin/{id}")
+    suspend fun checkInList(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Response<List<DataCheckInResponse>>
 
     /*@Headers("Content-Type: application/json")
     @GET("/api/time-table")

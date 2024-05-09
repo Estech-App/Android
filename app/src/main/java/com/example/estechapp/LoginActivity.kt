@@ -73,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
             val user = pref.getString("user", "")
             if (response.roles[0].authority == "ROLE_TEACHER") {
                 val editor = pref.edit()
+                editor.putBoolean("profesor", true)
                 editor.putString("mail", user)
                 editor.putString("token", response.token)
                 editor.commit()
@@ -80,22 +81,10 @@ class LoginActivity : AppCompatActivity() {
                 val token = pref.getString("token", "")
                 if (token != null && mail != null) {
                     viewModel.postEmail("Bearer $token", mail)
-
-                    viewModel.liveDataUserInfo.observe(this, Observer { response2 ->
-                        editor.putString("username", response2.name)
-                        editor.putString("lastname", response2.lastname)
-                        editor.putInt("id", response2.id)
-                        editor.commit()
-                    })
-
-                    viewModel.liveDataUserInfoError.observe(this, Observer {
-                    })
                 }
-                val intent = Intent(this, ProfesorActivity::class.java)
-                startActivity(intent)
-                finish()
             } else if (response.roles[0].authority == "ROLE_STUDENT") {
                 val editor = pref.edit()
+                editor.putBoolean("profesor", false)
                 editor.putString("mail", user)
                 editor.putString("token", response.token)
                 editor.commit()
@@ -103,21 +92,7 @@ class LoginActivity : AppCompatActivity() {
                 val token = pref.getString("token", "")
                 if (token != null && mail != null) {
                     viewModel.postEmail("Bearer $token", mail)
-
-                    viewModel.liveDataUserInfo.observe(this, Observer { response2 ->
-                        editor.putString("username", response2.name)
-                        editor.putString("lastname", response2.lastname)
-                        editor.putInt("id", response2.id)
-                        editor.commit()
-                    })
-
-                    viewModel.liveDataUserInfoError.observe(this, {
-
-                    })
                 }
-                val intent = Intent(this, AlumnoActivity::class.java)
-                startActivity(intent)
-                finish()
             } else {
                 val builder = AlertDialog.Builder(this)
                 val view = layoutInflater.inflate(R.layout.alert_response, null)
@@ -143,6 +118,29 @@ class LoginActivity : AppCompatActivity() {
             binding.pass.error = "El correo o la contraseña son incorrectos"
 
         }
+
+        val editor = pref.edit()
+
+        viewModel.liveDataUserInfo.observe(this, Observer { response2 ->
+            editor.putString("username", response2.name)
+            editor.putString("lastname", response2.lastname)
+            editor.putInt("id", response2.id)
+            editor.commit()
+            val profesor = pref.getBoolean("profesor", true)
+            if (profesor) {
+                val intent = Intent(this, ProfesorActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this, AlumnoActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        })
+
+        viewModel.liveDataUserInfoError.observe(this, Observer {
+            val pepe = "que"
+        })
 
     }
 }
