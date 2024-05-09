@@ -27,6 +27,7 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataUserInfoError = MutableLiveData<String>()
     val liveDataCheckIn = SingleLiveEvent<DataCheckInResponse>()
     val liveDataCheckInError = SingleLiveEvent<String>()
+    val liveDataCheckInList = MutableLiveData<List<DataCheckInResponse>?>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
 
     @SuppressLint("NullSafeMutableLiveData")
@@ -73,6 +74,19 @@ class MyViewModel(val context: Context) : ViewModel() {
                 liveDataCheckIn.postValue(myResponse)
             } else {
                 liveDataCheckInError.postValue("Error el checkin no va")
+            }
+        }
+    }
+
+    fun getCheckIn(
+        token: String,
+        id: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getCheckIn(token, id)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataCheckInList.postValue(myResponse)
             }
         }
     }

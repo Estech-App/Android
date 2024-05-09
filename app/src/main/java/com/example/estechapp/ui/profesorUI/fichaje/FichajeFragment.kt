@@ -173,6 +173,16 @@ class FichajeFragment : Fragment() {
 
                     binding.textView6.text = horaMinutos
 
+                    val token = pref.getString("token", "")
+
+                    val id = pref.getInt("id", 0)
+
+                    if (token != null) {
+
+                        viewModel.getCheckIn("Bearer $token", id)
+
+                    }
+
                     val checkIn = pref.getBoolean(
                         "checking",
                         true
@@ -451,6 +461,28 @@ class FichajeFragment : Fragment() {
                 }
             }, 5000)
         })
+
+        viewModel.liveDataCheckInList.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                if (it.isEmpty()) {
+                    val editor = pref.edit()
+                    editor.putBoolean("checking", true)
+                    editor.commit()
+                } else {
+                    val ultimoCheckin = it[0]
+                    if (ultimoCheckin.checkIn == true) {
+                        val editor = pref.edit()
+                        editor.putBoolean("checking", false)
+                        editor.commit()
+                    } else {
+                        val editor = pref.edit()
+                        editor.putBoolean("checking", true)
+                        editor.commit()
+                    }
+                }
+            }
+        })
+
     }
 
     override fun onDestroyView() {

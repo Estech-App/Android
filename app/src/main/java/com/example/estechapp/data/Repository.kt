@@ -19,6 +19,8 @@ class Repository(val context: Context) {
     suspend fun postCheckIn(token: String, checkInModel: DataCheckInModel) =
         retrofit.checkIn(token, checkInModel)
 
+    suspend fun getCheckIn(token: String, id: Int) = retrofit.checkInList(token, id)
+
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
 
 }
