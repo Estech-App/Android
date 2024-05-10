@@ -3,6 +3,7 @@ package com.example.estechapp.ui.profesorUI.fichaje
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -26,6 +27,9 @@ import java.util.Locale
 import java.util.TimeZone
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.estechapp.ProfesorActivity
+import com.example.estechapp.ui.profesorUI.fichaje.consultarFichaje.ConsultaFichajeFragment
 import java.util.*
 
 class FichajeFragment : Fragment() {
@@ -289,7 +293,7 @@ class FichajeFragment : Fragment() {
 
                     }
 
-                    handler.postDelayed(this, 1000)
+                    handler.postDelayed(this, 100)
 
                 }
             }
@@ -298,6 +302,7 @@ class FichajeFragment : Fragment() {
         handler.post(runnable)
 
         binding.login.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_fichaje_to_consultaFichajeFragment)
             /*val builder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.alert3, null)
             builder.setView(view)

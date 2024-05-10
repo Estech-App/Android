@@ -15,11 +15,20 @@
         android:id="@+id/navigation_fichaje"
         android:name="com.example.estechapp.ui.profesorUI.fichaje.FichajeFragment"
         android:label="@string/fichaje"
-        tools:layout="@layout/fragment_fichaje" />
+        tools:layout="@layout/fragment_fichaje" >
+        <action
+            android:id="@+id/action_navigation_fichaje_to_consultaFichajeFragment"
+            app:destination="@id/consultaFichajeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_practica"
         android:name="com.example.estechapp.ui.profesorUI.tutorias.TutoriasFragment"
         android:label="@string/tutorias"
         tools:layout="@layout/fragment_grupos" />
+    <fragment
+        android:id="@+id/consultaFichajeFragment"
+        android:name="com.example.estechapp.ui.profesorUI.fichaje.consultarFichaje.ConsultaFichajeFragment"
+        android:label="Consulta fichajes"
+        tools:layout="@layout/fragment_consulta_fichaje" />
 </navigation>

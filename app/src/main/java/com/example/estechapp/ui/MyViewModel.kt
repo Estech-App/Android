@@ -27,7 +27,7 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataUserInfoError = MutableLiveData<String>()
     val liveDataCheckIn = SingleLiveEvent<DataCheckInResponse>()
     val liveDataCheckInError = SingleLiveEvent<String>()
-    val liveDataCheckInList = MutableLiveData<List<DataCheckInResponse>?>()
+    val liveDataCheckInList = MutableLiveData<List<DataCheckInResponse>>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
 
     @SuppressLint("NullSafeMutableLiveData")
@@ -78,6 +78,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun getCheckIn(
         token: String,
         id: Int
