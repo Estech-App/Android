@@ -11,6 +11,7 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
+import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.User
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +29,7 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataCheckIn = SingleLiveEvent<DataCheckInResponse>()
     val liveDataCheckInError = SingleLiveEvent<String>()
     val liveDataCheckInList = MutableLiveData<List<DataCheckInResponse>>()
+    val liveDataMentoring = MutableLiveData<List<DataMentoringResponse>>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
 
     @SuppressLint("NullSafeMutableLiveData")
@@ -88,6 +90,20 @@ class MyViewModel(val context: Context) : ViewModel() {
             if (response.isSuccessful) {
                 val myResponse = response.body()
                 liveDataCheckInList.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getMentoringTeacher(
+        token: String,
+        id: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getMentoringTeacher(token, id)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataMentoring.postValue(myResponse)
             }
         }
     }

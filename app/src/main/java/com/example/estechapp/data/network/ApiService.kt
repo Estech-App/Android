@@ -5,6 +5,7 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
+import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataTimeTableModel
 import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
@@ -39,11 +40,18 @@ interface ApiService {
     ): Response<DataCheckInResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("/api/check-in/teacher-checkin/{id}")
+    @GET("/api/check-in/teacher/{id}")
     suspend fun checkInList(
         @Header("Authorization") token: String,
         @Path("id") id: Int
     ): Response<List<DataCheckInResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/mentoring/by-teacher/{id}")
+    suspend fun mentoringListTeacher(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Response<List<DataMentoringResponse>>
 
     /*@Headers("Content-Type: application/json")
     @GET("/api/time-table")

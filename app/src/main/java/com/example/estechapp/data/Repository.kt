@@ -21,6 +21,8 @@ class Repository(val context: Context) {
 
     suspend fun getCheckIn(token: String, id: Int) = retrofit.checkInList(token, id)
 
+    suspend fun getMentoringTeacher(token: String, id: Int) = retrofit.mentoringListTeacher(token, id)
+
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
 
 }
