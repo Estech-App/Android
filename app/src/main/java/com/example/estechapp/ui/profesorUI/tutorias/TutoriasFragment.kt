@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.estechapp.databinding.FragmentTutoriasBinding
+import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
+import com.example.estechapp.ui.adapter.TutoriasPendientesAdapter
+import com.example.estechapp.data.models.Tutoria
 
 class TutoriasFragment : Fragment() {
 
@@ -24,6 +27,23 @@ class TutoriasFragment : Fragment() {
         _binding = FragmentTutoriasBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerAsignadas.adapter = TutoriasAsignadasAdapter(
+            listOf(
+                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
+            )
+        )
+
+        binding.recyclerPendientes.adapter = TutoriasPendientesAdapter(
+            mutableListOf(
+                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
+            )
+
+        )
     }
 
     override fun onDestroyView() {

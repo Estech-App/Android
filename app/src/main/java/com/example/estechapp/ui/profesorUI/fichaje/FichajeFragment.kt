@@ -16,7 +16,8 @@ import java.util.Calendar
 import java.util.*
 import java.text.SimpleDateFormat
 import androidx.lifecycle.Observer
-import com.example.estechapp.ui.profesorUI.Tutoria
+import com.example.estechapp.ui.adapter.TutoriasHotAdapter
+import com.example.estechapp.data.models.Tutoria
 
 class FichajeFragment : Fragment() {
 
@@ -46,7 +47,7 @@ class FichajeFragment : Fragment() {
 
         binding.recyclerTutoriasHot.adapter = TutoriasHotAdapter(
             listOf(
-                Tutoria("Ramon", "DAM 2º", "Aula DAM")
+                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
             )
         )
 

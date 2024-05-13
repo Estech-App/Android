@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentConsultaFichajeBinding
-import com.example.estechapp.ui.profesorUI.Fichaje
+import com.example.estechapp.ui.adapter.FichajesAdapter
+import com.example.estechapp.data.models.Fichaje
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
