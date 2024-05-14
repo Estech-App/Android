@@ -32,6 +32,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estechapp.ProfesorActivity
 import com.example.estechapp.ui.profesorUI.fichaje.consultarFichaje.ConsultaFichajeFragment
 import java.util.*
+import java.util.Calendar
+import java.util.*
+import java.text.SimpleDateFormat
+import androidx.lifecycle.Observer
+import com.example.estechapp.ui.adapter.TutoriasHotAdapter
+import com.example.estechapp.data.models.Tutoria
 
 class FichajeFragment : Fragment() {
 

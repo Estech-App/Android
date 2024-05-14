@@ -1,4 +1,4 @@
-package com.example.estechapp.ui.profesorUI.fichaje.consultarFichaje
+package com.example.estechapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +12,7 @@ import com.example.estechapp.ui.profesorUI.Fichaje
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.example.estechapp.data.models.Fichaje
 
 class FichajesAdapter(private val fichajes: List<FichajePair>) :
     RecyclerView.Adapter<FichajesAdapter.ViewHolder>() {

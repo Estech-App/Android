@@ -1,7 +1,6 @@
-package com.example.estechapp.ui.profesorUI.fichaje
+package com.example.estechapp.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +10,7 @@ import com.example.estechapp.databinding.ItemTutoriasHotBinding
 import com.example.estechapp.ui.profesorUI.Tutoria
 import java.text.SimpleDateFormat
 import java.util.Locale
+import com.example.estechapp.data.models.Tutoria
 
 class TutoriasHotAdapter(private val tutorias: List<DataMentoringResponse>) :
     RecyclerView.Adapter<TutoriasHotAdapter.ViewHolder>() {

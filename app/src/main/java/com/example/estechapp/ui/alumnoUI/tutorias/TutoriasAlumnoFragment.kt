@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.estechapp.data.models.Tutoria
 import com.example.estechapp.databinding.FragmentTutoriasAlumnoBinding
+import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
 
 class TutoriasAlumnoFragment : Fragment() {
 
@@ -25,6 +27,16 @@ class TutoriasAlumnoFragment : Fragment() {
         val root: View = binding.root
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerTutoriasAlumno.adapter = TutoriasAsignadasAdapter(
+            listOf(
+                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
+            )
+        )
     }
 
     override fun onDestroyView() {

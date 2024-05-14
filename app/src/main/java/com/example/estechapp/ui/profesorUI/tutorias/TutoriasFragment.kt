@@ -14,6 +14,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentTutoriasBinding
+import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
+import com.example.estechapp.ui.adapter.TutoriasPendientesAdapter
+import com.example.estechapp.data.models.Tutoria
 
 class TutoriasFragment : Fragment() {
 
@@ -72,6 +75,20 @@ class TutoriasFragment : Fragment() {
             dialog.dismiss()
         }*/
     }
+        binding.recyclerAsignadas.adapter = TutoriasAsignadasAdapter(
+            listOf(
+                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
+            )
+        )
+
+        binding.recyclerPendientes.adapter = TutoriasPendientesAdapter(
+            mutableListOf(
+                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
+            )
+
+        )
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

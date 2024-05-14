@@ -19,6 +19,9 @@ import com.example.estechapp.data.models.FichajePair
 import com.example.estechapp.databinding.FragmentConsultaFichajeBinding
 import com.example.estechapp.ui.MyViewModel
 import com.example.estechapp.ui.profesorUI.Fichaje
+import com.example.estechapp.databinding.FragmentConsultaFichajeBinding
+import com.example.estechapp.ui.adapter.FichajesAdapter
+import com.example.estechapp.data.models.Fichaje
 
 class ConsultaFichajeFragment : Fragment() {
 
