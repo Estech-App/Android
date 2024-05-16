@@ -1,16 +1,20 @@
 package com.example.estechapp.ui.adapter
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.R
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.databinding.ItemTutoriasHotBinding
-import com.example.estechapp.ui.profesorUI.Tutoria
 import java.text.SimpleDateFormat
 import java.util.Locale
 import com.example.estechapp.data.models.Tutoria
+import com.example.estechapp.ui.MyViewModel
+import java.util.TimeZone
 
 class TutoriasHotAdapter(private val tutorias: List<DataMentoringResponse>) :
     RecyclerView.Adapter<TutoriasHotAdapter.ViewHolder>() {
@@ -23,16 +27,18 @@ class TutoriasHotAdapter(private val tutorias: List<DataMentoringResponse>) :
             binding.aula.text = tutoria.roomId.toString()
 
             // Convierte la cadena de texto a un objeto Date
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+            // La zona horaria se establece a la del sistema por defecto
+            dateFormat.timeZone = TimeZone.getDefault()
             val date = dateFormat.parse(tutoria.date)
 
             // Formatea la fecha a una cadena de texto que solo incluye la hora y los minutos
-            val timeFormat = SimpleDateFormat("HH:mm", Locale.US)
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            timeFormat.timeZone = TimeZone.getTimeZone("UTC")
             val time = timeFormat.format(date)
 
             binding.fecha.text = time
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

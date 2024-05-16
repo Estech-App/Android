@@ -1,24 +1,34 @@
 package com.example.estechapp.ui.adapter
 
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.databinding.ItemTutoriasBinding
 import com.example.estechapp.data.models.Tutoria
+import java.util.Locale
 
-class TutoriasPendientesAdapter(private val tutoria: List<Tutoria>) : RecyclerView.Adapter<TutoriasPendientesAdapter.ViewHolder>() {
+class TutoriasPendientesAdapter(private val tutoria: List<DataMentoringResponse>) : RecyclerView.Adapter<TutoriasPendientesAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemTutoriasBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(tutoria: Tutoria){
+        fun bind(tutoria: DataMentoringResponse){
             with(binding){
-                nombreAlumnoTutoria.text = tutoria.alumno
-                diaTutoria.text = tutoria.dia
-                aulaTutoria.text = tutoria.aula
-                horaTutoria.text = tutoria.hora
+                nombreAlumnoTutoria.text = tutoria.studentId.toString()
+
+                // Formatear la fecha
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("d/M", Locale.getDefault())
+                val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val date = inputFormat.parse(tutoria.date)
+                val time = inputFormat.parse(tutoria.date)
+                diaTutoria.text = outputFormat.format(date)
+
+                aulaTutoria.text = tutoria.roomId.toString()
+                horaTutoria.text = timeFormat.format(time)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,6 +42,6 @@ class TutoriasPendientesAdapter(private val tutoria: List<Tutoria>) : RecyclerVi
     override fun getItemCount() = tutoria.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(tutoria[position])
     }
 }

@@ -8,7 +8,6 @@ import com.example.estechapp.R
 import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.FichajePair
 import com.example.estechapp.databinding.ItemConsultaFichajeBinding
-import com.example.estechapp.ui.profesorUI.Fichaje
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

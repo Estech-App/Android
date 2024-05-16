@@ -18,8 +18,6 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.FichajePair
 import com.example.estechapp.databinding.FragmentConsultaFichajeBinding
 import com.example.estechapp.ui.MyViewModel
-import com.example.estechapp.ui.profesorUI.Fichaje
-import com.example.estechapp.databinding.FragmentConsultaFichajeBinding
 import com.example.estechapp.ui.adapter.FichajesAdapter
 import com.example.estechapp.data.models.Fichaje
 
@@ -43,12 +41,6 @@ class ConsultaFichajeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*binding.recyclerFichajes.adapter = FichajesAdapter(
-            listOf(
-                Fichaje(1,"Enero", 2023, "19:00")
-            )
-        )*/
 
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
         val token = pref.getString("token", "")
