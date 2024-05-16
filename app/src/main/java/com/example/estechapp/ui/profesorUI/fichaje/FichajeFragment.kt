@@ -20,7 +20,6 @@ import androidx.lifecycle.Observer
 import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentFichajeBinding
 import com.example.estechapp.ui.MyViewModel
-import com.example.estechapp.ui.profesorUI.Tutoria
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -28,9 +27,13 @@ import java.util.TimeZone
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estechapp.ProfesorActivity
 import com.example.estechapp.ui.profesorUI.fichaje.consultarFichaje.ConsultaFichajeFragment
 import java.util.*
+import java.util.*
+import com.example.estechapp.ui.adapter.TutoriasHotAdapter
+import com.example.estechapp.data.models.Tutoria
 
 class FichajeFragment : Fragment() {
 
@@ -56,16 +59,16 @@ class FichajeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerTutoriasHot.adapter = TutoriasHotAdapter(
-            listOf(
-                Tutoria("Ramon", "DAM 2º", "Aula DAM"),
-                Tutoria("Juan", "DOWN 2º", "Aula DOWN"),
-                Tutoria("Fernando", "DAM 2º", "Aula DAM")
-            )
-        )
-
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
         val user = pref.getString("username", "")
+        val token = pref.getString("token", "")
+        val id = pref.getInt("id", 0)
+
+        val recyclerView = binding.recyclerTutoriasHot
+        val llm = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = llm
+
+        viewModel.getMentoringTeacher("Bearer $token", id)
 
         binding.textView4.text = user
 
@@ -488,6 +491,48 @@ class FichajeFragment : Fragment() {
             }
         })
 
+        viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer { it ->
+            if (it != null) {
+                val calendar = Calendar.getInstance()
+                // La zona horaria se establece a la del sistema por defecto
+                val tz = TimeZone.getDefault()
+                calendar.timeZone = tz
+                // Asegúrate de que el calendario comienza a las 00:00:00
+                calendar.set(Calendar.HOUR_OF_DAY, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+                val today = calendar.time
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+                // La zona horaria se establece a la del sistema por defecto
+                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+                val filteredMentorings = it.filter {
+                    val mentoringCalendar = Calendar.getInstance()
+                    mentoringCalendar.timeZone = tz
+                    // Convierte la cadena de texto a un objeto Date
+                    val date = dateFormat.parse(it.date)
+                    mentoringCalendar.time = date
+
+                    val mentoringYear = mentoringCalendar.get(Calendar.YEAR)
+                    val mentoringMonth = mentoringCalendar.get(Calendar.MONTH)
+                    val mentoringDay = mentoringCalendar.get(Calendar.DAY_OF_MONTH)
+
+                    val isToday = mentoringYear == calendar.get(Calendar.YEAR) &&
+                            mentoringMonth == calendar.get(Calendar.MONTH) &&
+                            mentoringDay == calendar.get(Calendar.DAY_OF_MONTH)
+
+                    val isStatusValid = it.status == "APPROVED" || it.status == "MODIFIED"
+
+                    isToday && isStatusValid
+                }
+
+                val adapter = TutoriasHotAdapter(filteredMentorings)
+                recyclerView.adapter = adapter
+
+            }
+        })
     }
 
     override fun onDestroyView() {
