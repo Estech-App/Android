@@ -22,9 +22,4 @@
         android:name="com.example.estechapp.ui.alumnoUI.grupo.GrupoFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_grupo_alumno" />
-    <fragment
-        android:id="@+id/navigation_compartido"
-        android:name="com.example.estechapp.ui.alumnoUI.grupo.CompartidoFragment"
-        android:label="fragment_compartido"
-        tools:layout="@layout/fragment_compartido" />
 </navigation>

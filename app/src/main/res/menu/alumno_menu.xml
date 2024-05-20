@@ -15,9 +15,5 @@
         android:id="@+id/navigation_grupo_alumno"
         android:icon="@drawable/grupos_svg"
         android:title="Grupo X" />
-    <item
-        android:id="@+id/navigation_compartido"
-        android:icon="@drawable/icons8_logo_de_google"
-        android:title="Carpeta Compartida" />
 
 </menu>
