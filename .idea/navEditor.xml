@@ -20,12 +20,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_home_alunmno">
+                  <entry key="navigation_home_alunno">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="29" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
