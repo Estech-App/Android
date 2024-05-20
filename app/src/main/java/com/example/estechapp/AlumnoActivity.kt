@@ -28,8 +28,7 @@ class AlumnoActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_tutorias_alumno,
                 R.id.navigation_practicaLibre,
-                R.id.navigation_grupo_alumno,
-                R.id.navigation_compartido
+                R.id.navigation_grupo_alumno
             )
         )
         navView.setupWithNavController(navController)
