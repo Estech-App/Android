@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.estechapp.databinding.ProfesorMainBinding
@@ -18,6 +19,7 @@ import com.example.estechapp.ui.MyViewModel
 class ProfesorActivity : AppCompatActivity() {
 
     private lateinit var binding: ProfesorMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,7 @@ class ProfesorActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_grupos, R.id.navigation_fichaje, R.id.navigation_practica
             )
@@ -39,13 +41,14 @@ class ProfesorActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener{
+        navController.addOnDestinationChangedListener(object :
+            NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(
                 controller: NavController,
                 destination: NavDestination,
                 arguments: Bundle?
             ) {
-                if (destination?.id == R.id.navigation_fichaje){
+                if (destination?.id == R.id.navigation_fichaje) {
                     binding.toolbar.isVisible = false
                 } else {
                     binding.toolbar.isVisible = true
@@ -54,4 +57,11 @@ class ProfesorActivity : AppCompatActivity() {
 
         })
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
+    }
+
 }

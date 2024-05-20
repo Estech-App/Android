@@ -26,7 +26,10 @@ class AlumnoActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_tutorias_alumno, R.id.navigation_practicaLibre, R.id.navigation_grupo_alumno, R.id.navigation_compartido
+                R.id.navigation_tutorias_alumno,
+                R.id.navigation_practicaLibre,
+                R.id.navigation_grupo_alumno,
+                R.id.navigation_compartido
             )
         )
         navView.setupWithNavController(navController)
