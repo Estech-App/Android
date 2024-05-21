@@ -5,7 +5,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.estechapp.databinding.AlumnoMainBinding
 
@@ -29,7 +28,7 @@ class AlumnoActivity : AppCompatActivity() {
                 R.id.navigation_tutorias_alumno,
                 R.id.navigation_practicaLibre,
                 R.id.navigation_grupo_alumno,
-                R.id.navigation_compartido
+                R.id.navigation_home_alumno
             )
         )
         navView.setupWithNavController(navController)
