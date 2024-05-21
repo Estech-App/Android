@@ -9,12 +9,11 @@
         android:id="@+id/cardView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:cardBackgroundColor="#81EDEDED"
         app:cardElevation="0sp"
         app:layout_constraintBottom_toTopOf="@+id/cardView11"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="@+id/cardView11">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
