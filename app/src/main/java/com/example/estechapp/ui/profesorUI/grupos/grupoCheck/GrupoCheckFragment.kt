@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import com.example.estechapp.databinding.FragmentGrupoCheckBinding
 import com.example.estechapp.ui.MyViewModel
 import com.example.estechapp.ui.adapter.GrupoAlumnosAdapter
-import com.example.estechapp.data.models.Alumno
 
 class GrupoCheckFragment : Fragment() {
 

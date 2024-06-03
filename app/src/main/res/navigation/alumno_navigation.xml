@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_grupo_alumno" />
     <fragment
         android:id="@+id/navigation_home_alumno"
-        android:name="com.example.estechapp.ui.alumnoUI.HomeAlumnoFragment"
+        android:name="com.example.estechapp.ui.alumnoUI.home.HomeAlumnoFragment"
         android:label="fragment_home_alumno"
         tools:layout="@layout/fragment_home_alumno" />
 </navigation>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -23,12 +24,11 @@
         android:id="@+id/mes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
         android:text="Mes"
         android:textColor="#000000"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/dia"
-        app:layout_constraintEnd_toStartOf="@+id/ano"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/dia"
         app:layout_constraintTop_toTopOf="@+id/dia" />
 
@@ -36,25 +36,25 @@
         android:id="@+id/ano"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
         android:text="Año"
         android:textColor="#000000"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/mes"
-        app:layout_constraintEnd_toStartOf="@+id/hora"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mes"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mes" />
 
     <TextView
         android:id="@+id/hora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:text="Hora"
         android:textColor="#000000"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/ano"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.60"
+        app:layout_constraintStart_toEndOf="@+id/ano"
         app:layout_constraintTop_toTopOf="@+id/ano" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

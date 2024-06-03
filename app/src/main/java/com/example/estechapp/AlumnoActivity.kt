@@ -10,6 +10,8 @@ import com.example.estechapp.databinding.AlumnoMainBinding
 
 class AlumnoActivity : AppCompatActivity() {
 
+    /* Aqui solo esta el navigation view del alumno */
+
     private lateinit var binding: AlumnoMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +23,6 @@ class AlumnoActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_alumno_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_tutorias_alumno,

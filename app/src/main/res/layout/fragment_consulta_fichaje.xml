@@ -81,12 +81,11 @@
                         android:id="@+id/mes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
                         android:text="Mes"
                         android:textColor="#FFFFFF"
                         android:textSize="15dp"
                         app:layout_constraintBottom_toBottomOf="@+id/dia"
-                        app:layout_constraintEnd_toStartOf="@+id/ano"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/dia"
                         app:layout_constraintTop_toTopOf="@+id/dia" />
 
@@ -94,12 +93,11 @@
                         android:id="@+id/ano"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
                         android:text="Año"
                         android:textColor="#FFFFFF"
                         android:textSize="15dp"
                         app:layout_constraintBottom_toBottomOf="@+id/mes"
-                        app:layout_constraintEnd_toStartOf="@+id/hora"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/mes"
                         app:layout_constraintTop_toTopOf="@+id/mes" />
 
@@ -107,12 +105,13 @@
                         android:id="@+id/hora"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:text="Hora"
                         android:textColor="#FFFFFF"
                         android:textSize="15dp"
                         app:layout_constraintBottom_toBottomOf="@+id/ano"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.60"
+                        app:layout_constraintStart_toEndOf="@+id/ano"
                         app:layout_constraintTop_toTopOf="@+id/ano" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

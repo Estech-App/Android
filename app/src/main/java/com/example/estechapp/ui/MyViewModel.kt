@@ -24,6 +24,7 @@ class MyViewModel(val context: Context) : ViewModel() {
 
     private val repository = Repository(context)
 
+    //Aqui todos los liveData, el SingleLiveEvent lo explico en su clase.
     val liveDataLogin = MutableLiveData<DataLoginResponse>()
     val liveDataLoginError = MutableLiveData<String>()
     val liveDataUserInfo = MutableLiveData<DataUserInfoResponse>()
@@ -36,6 +37,8 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataRoom = MutableLiveData<DataRoomResponse>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
 
+    //Todas las funciones son casi iguales
+    //El postLogin para hacer el login y recibir el correo para luego pasarselo al postEmail.
     @SuppressLint("NullSafeMutableLiveData")
     fun postLogin(email: String, password: String) {
         val loginModel = DataLoginModel(email, password)
@@ -48,6 +51,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //El postEmail para pasarle el correo y recibir la informacion.
     @SuppressLint("NullSafeMutableLiveData")
     fun postEmail(token: String, email: String) {
         val emailModel = DataEmailModel(email)
@@ -62,6 +66,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //El postCheckIn para hacer los fichajes.
     @SuppressLint("NullSafeMutableLiveData")
     fun postCheckIn(
         token: String,
@@ -84,6 +89,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //El getCheckIn para recibir todos los checkin por id.
     @SuppressLint("NullSafeMutableLiveData")
     fun getCheckIn(
         token: String,
@@ -98,6 +104,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //El getMentoringTeacher para recibir todas las tutorias por id
     @SuppressLint("NullSafeMutableLiveData")
     fun getMentoringTeacher(
         token: String,
@@ -112,6 +119,8 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //Este hace lo mismo que el getMentoringTeacher pero se ha dividido en 2 nose porque
+    //si en el backend son lo mismo.
     @SuppressLint("NullSafeMutableLiveData")
     fun getMentoringStudent(
         token: String,
@@ -126,6 +135,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //El getRoomList para recibir todas las aulas.
     @SuppressLint("NullSafeMutableLiveData")
     fun getRoomList(
         token: String
@@ -139,6 +149,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
+    //El getRoomId para recibir el nombre de la sala pasandole el roomId.
     @SuppressLint("NullSafeMutableLiveData")
     fun getRoomId(
         token: String,

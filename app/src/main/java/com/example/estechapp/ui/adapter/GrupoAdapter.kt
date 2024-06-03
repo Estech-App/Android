@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.databinding.ItemGruposCuadradoBinding
-import com.example.estechapp.data.models.Grupo
 
 class GrupoAdapter(private val grupos: List<Grupo>) : RecyclerView.Adapter<GrupoAdapter.ViewHolder>() {
 

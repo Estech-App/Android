@@ -18,6 +18,8 @@ import com.example.estechapp.ui.MyViewModel
 
 class ProfesorActivity : AppCompatActivity() {
 
+    /* Aqui solo esta el navigation view del profesor */
+
     private lateinit var binding: ProfesorMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -31,11 +33,11 @@ class ProfesorActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_grupos, R.id.navigation_fichaje, R.id.navigation_practica
+                R.id.navigation_grupos,
+                R.id.navigation_fichaje,
+                R.id.navigation_practica
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

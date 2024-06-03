@@ -8,6 +8,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class SingleLiveEvent<T> : MutableLiveData<T>() {
 
+    /* Esto es una clase para que cuando navegue con el navView
+    de por ejemplo tutorias a grupos y vuelva a tutorias para que
+    no se me cree otro livedata en tutorias */
+
     private val pending = AtomicBoolean(false)
 
     @MainThread

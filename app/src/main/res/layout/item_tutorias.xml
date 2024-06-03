@@ -63,7 +63,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView17" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/aulaTutoria"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -73,18 +73,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/diaTutoria"
         app:layout_constraintStart_toEndOf="@+id/diaTutoria"
         app:layout_constraintTop_toTopOf="@+id/diaTutoria" />
-
-    <TextView
-        android:id="@+id/aulaTutoria"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:text="[AULA]"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView19"
-        app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toTopOf="@+id/textView19" />
 
     <ImageView
         android:id="@+id/horaImg"

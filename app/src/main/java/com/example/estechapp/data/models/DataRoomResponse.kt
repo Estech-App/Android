@@ -5,5 +5,6 @@ data class DataRoomResponse(
     val name: String,
     val description: String,
     val mentoringRoom: Boolean,
-    val studyRoom: Boolean
+    val studyRoom: Boolean,
+    val timeTables: List<DataRoomTimeTable>
 )
