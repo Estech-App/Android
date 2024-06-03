@@ -54,8 +54,6 @@ class ConsultaFichajeFragment : Fragment() {
 
         viewModel.getCheckIn("Bearer $token", id)
 
-        //Incluir foto aqui para mejor comprension.
-
         //Aqui me hice un fichajePairs que contiene el fichaje entrada(true) y salida(false).
         //Para poder poner en la misma fila del recyclerview a que hora fue la entrada y salida.
         viewModel.liveDataCheckInList.observe(viewLifecycleOwner, Observer {

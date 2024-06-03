@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.estechapp.databinding.FragmentGrupoCheckBinding
 import com.example.estechapp.ui.MyViewModel
-import com.example.estechapp.ui.adapter.GrupoAlumnosAdapter
+//import com.example.estechapp.ui.adapter.GrupoAlumnosAdapter
 
 class GrupoCheckFragment : Fragment() {
 
@@ -31,11 +31,11 @@ class GrupoCheckFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerAlumno.adapter = GrupoAlumnosAdapter(
+        /*binding.recyclerAlumno.adapter = GrupoAlumnosAdapter(
             listOf(
                 Alumno("Ramon")
             )
-        )
+        )*/
 
     }
 

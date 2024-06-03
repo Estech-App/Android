@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.databinding.ItemGruposCuadradoBinding
 
-class GrupoAdapter(private val grupos: List<Grupo>) : RecyclerView.Adapter<GrupoAdapter.ViewHolder>() {
+/*class GrupoAdapter(private val grupos: List<Grupo>) : RecyclerView.Adapter<GrupoAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemGruposCuadradoBinding): RecyclerView.ViewHolder(binding.root){
 
@@ -31,4 +31,4 @@ class GrupoAdapter(private val grupos: List<Grupo>) : RecyclerView.Adapter<Grupo
         TODO("Not yet implemented")
     }
 
-}
+}*/

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.estechapp.databinding.FragmentGruposBinding
-import com.example.estechapp.ui.adapter.GrupoAdapter
+//import com.example.estechapp.ui.adapter.GrupoAdapter
 import com.example.estechapp.ui.adapter.HorarioAdapter
 import com.example.estechapp.data.models.Horario
 import java.util.Calendar
@@ -41,11 +41,11 @@ class GruposFragment : Fragment() {
                 Horario("8:20 a 10:20", "Lenguaje de Marcas", "DAM 1º")
             )
         )
-        binding.recyclerGrupos.adapter = GrupoAdapter(
+        /*binding.recyclerGrupos.adapter = GrupoAdapter(
             listOf(
                 Grupo("Dam 1º", 18)
             )
-        )
+        )*/
 
         //Esto es para que se actualice la fecha y hora cada segundo
         val handler = Handler(Looper.getMainLooper())

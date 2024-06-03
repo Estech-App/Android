@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.databinding.ItemListaAlumnoBinding
 
-class GrupoAlumnosAdapter(private val alumno: List<Alumno>) : RecyclerView.Adapter<GrupoAlumnosAdapter.ViewHolder>(){
+/*class GrupoAlumnosAdapter(private val alumno: List<Alumno>) : RecyclerView.Adapter<GrupoAlumnosAdapter.ViewHolder>(){
 
     class ViewHolder(val binding: ItemListaAlumnoBinding): RecyclerView.ViewHolder(binding.root){
 
@@ -28,4 +28,4 @@ class GrupoAlumnosAdapter(private val alumno: List<Alumno>) : RecyclerView.Adapt
 
         holder.binding.orden.text = position.toString()
     }
-}
+}*/
