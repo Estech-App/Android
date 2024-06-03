@@ -31,13 +31,16 @@ class LoginActivity : AppCompatActivity() {
         binding = LoginMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //SharedPreferences debe de guardar el usuario y la contraseña y cuando se inicie la aplicación instantaneamente iniciar sesión
-
+        /* Voy a usar mucho el getSharedPreferences para pasarme datos entre las vistas
+        Aqui voy a hacer que el correo se guarde y cada vez que abres la app no tienes que ponerlo
+        solo la contraseña */
         val pref = getSharedPreferences("user", Context.MODE_PRIVATE)
         val mailInicio = pref.getString("mail", "")
 
+        //Aqui si ya has iniciado sesion anteriormente se te pone el correo
         binding.user.setText(mailInicio)
 
+        //Aqui si los campos estan vacios salen los .error con mensajes.
         binding.login.setOnClickListener {
             val user = binding.user.text.toString()
             val pass = binding.pass.text.toString()
@@ -56,10 +59,9 @@ class LoginActivity : AppCompatActivity() {
 
                 binding.pass.error = "Introduce la contraseña"
 
-                //Toast.makeText(applicationContext, "El campo de la contraseña esta vacio", Toast.LENGTH_SHORT).show()
-
             } else {
 
+                //Aqui guarda el correo
                 val editor = pref.edit()
                 editor.putString("user", user)
                 editor.commit()
@@ -69,9 +71,13 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        //Este es el livedata del login.
         viewModel.liveDataLogin.observe(this, Observer { response ->
+            //Recibe el user
             val user = pref.getString("user", "")
             if (response.roles[0].authority == "ROLE_TEACHER") {
+                //Este if es cuando el login lo hace el profesor
+                //Se guarda los datos y hace el postEmail
                 val editor = pref.edit()
                 editor.putBoolean("profesor", true)
                 editor.putString("mail", user)
@@ -83,6 +89,8 @@ class LoginActivity : AppCompatActivity() {
                     viewModel.postEmail("Bearer $token", mail)
                 }
             } else if (response.roles[0].authority == "ROLE_STUDENT") {
+                //Este else if es cuando el login lo hace el alumno
+                //Se guarda los datos y hace el postEmail
                 val editor = pref.edit()
                 editor.putBoolean("profesor", false)
                 editor.putString("mail", user)
@@ -94,6 +102,8 @@ class LoginActivity : AppCompatActivity() {
                     viewModel.postEmail("Bearer $token", mail)
                 }
             } else {
+                //Este else es cuando el login es correcto pero es secretaria o admin
+                //Te sale un alertdialog en rojo con el mensaje
                 val builder = AlertDialog.Builder(this)
                 val view = layoutInflater.inflate(R.layout.alert_response, null)
                 val textview = view.findViewById<TextView>(R.id.textView16)
@@ -111,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
+        //Esto es cuando de error el login. Porque el correo o la contraseña son incorrectos.
         viewModel.liveDataLoginError.observe(this) {
 
             binding.user.error = "El correo o la contraseña son incorrectos"
@@ -121,6 +132,9 @@ class LoginActivity : AppCompatActivity() {
 
         val editor = pref.edit()
 
+        /*Este es el livedata del userinfo.
+        Me guardo los datos del usuario y si es profesor hace intent a profesorActivity
+        y si es alumno pues lo mismo pero del alumno */
         viewModel.liveDataUserInfo.observe(this, Observer { response2 ->
             editor.putString("username", response2.name)
             editor.putString("lastname", response2.lastname)
@@ -138,8 +152,9 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
+        //Esto es cuando el UserInfo da error. Que no deberia de pasar.
         viewModel.liveDataUserInfoError.observe(this, Observer {
-            val pepe = "que"
+            Toast.makeText(applicationContext, "No se ha podido obtener la informacion del usuario", Toast.LENGTH_SHORT).show()
         })
 
     }

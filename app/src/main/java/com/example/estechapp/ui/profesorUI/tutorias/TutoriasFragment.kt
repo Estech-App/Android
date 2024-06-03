@@ -1,26 +1,17 @@
 package com.example.estechapp.ui.profesorUI.tutorias
 
-import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentTutoriasBinding
 import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
 import com.example.estechapp.ui.adapter.TutoriasPendientesAdapter
-import com.example.estechapp.data.models.Tutoria
 import com.example.estechapp.ui.MyViewModel
 
 class TutoriasFragment : Fragment() {
@@ -31,8 +22,6 @@ class TutoriasFragment : Fragment() {
         MyViewModel.MyViewModelFactory(requireContext())
     }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,7 +31,6 @@ class TutoriasFragment : Fragment() {
     ): View {
 
         _binding = FragmentTutoriasBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         return binding.root
     }
@@ -50,10 +38,12 @@ class TutoriasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Recibo los datos con el sharedPreferences
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
         val token = pref.getString("token", "")
         val id = pref.getInt("id", 0)
 
+        //Voy preparando los recyclerView
         val recyclerView = binding.recyclerAsignadas
         val llm = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = llm
@@ -99,30 +89,39 @@ class TutoriasFragment : Fragment() {
 
         viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer { mentoringList ->
             if (mentoringList != null) {
-                val pendientes = mentoringList.filter { it.status == "PENDING" }
-                val otras = mentoringList.filter { it.status != "PENDING" }
 
-                // Aquí puedes usar 'pendientes' y 'otras' para actualizar tus RecyclerViews
-                // Por ejemplo:
+                //Aqui estoy usando el boolean student para que cuando me salga las tutorias
+                //si es false sale por ejemplo Juan Valverde y si es true sale Sergio Velasco
+                val editor = pref.edit()
+                editor.putBoolean("student", false)
+                editor.commit()
+
+                //Aqui con el roomId saco el roomName
+                for (mentoring in mentoringList) {
+                    viewModel.getRoomId("Bearer $token", mentoring.roomId)
+                    mentoring.roomName = pref.getString("room", "")!!
+                    mentoring.studentAndroid = pref.getBoolean("student", false)
+                }
+                //Aqui si es pending se va a PendientesAdapter
+                //Y si es approved o modified se van a AsignadasAdapter
+                val pendientes = mentoringList.filter { it.status == "PENDING" }
+                val otras = mentoringList.filter { it.status == "APPROVED" || it.status == "MODIFIED" }
+
                 recyclerView.adapter = TutoriasAsignadasAdapter(otras)
                 recyclerView2.adapter = TutoriasPendientesAdapter(pendientes)
             }
         })
 
+        //Aqui con el roomId saco el nombre.
+        viewModel.liveDataRoom.observe(viewLifecycleOwner, Observer { it ->
+            if (it != null) {
+                val editor = pref.edit()
+                editor.putString("room", it.name)
+                editor.commit()
+            }
+        })
+
     }
-        /*binding.recyclerAsignadas.adapter = TutoriasAsignadasAdapter(
-            listOf(
-                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
-            )
-        )
-
-        binding.recyclerPendientes.adapter = TutoriasPendientesAdapter(
-            mutableListOf(
-                Tutoria("Ramon", "DAM 2º", "Aula DAM","","","",true)
-            )
-
-        )
-    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

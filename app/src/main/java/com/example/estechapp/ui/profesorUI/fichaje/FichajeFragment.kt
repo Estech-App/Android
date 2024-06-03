@@ -1,9 +1,7 @@
 package com.example.estechapp.ui.profesorUI.fichaje
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -24,16 +22,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.estechapp.ProfesorActivity
-import com.example.estechapp.ui.profesorUI.fichaje.consultarFichaje.ConsultaFichajeFragment
-import java.util.*
-import java.util.*
 import com.example.estechapp.ui.adapter.TutoriasHotAdapter
-import com.example.estechapp.data.models.Tutoria
 
 class FichajeFragment : Fragment() {
 
@@ -52,18 +43,19 @@ class FichajeFragment : Fragment() {
     ): View {
         _binding = FragmentFichajeBinding.inflate(inflater, container, false)
 
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Recibo los datos.
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
         val user = pref.getString("username", "")
         val token = pref.getString("token", "")
         val id = pref.getInt("id", 0)
 
+        //Voy preparando el recyclerview
         val recyclerView = binding.recyclerTutoriasHot
         val llm = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = llm
@@ -72,6 +64,9 @@ class FichajeFragment : Fragment() {
 
         binding.textView4.text = user
 
+        //Esto es para que se actualice la fecha y la hora y si el checkin es entrada o salida
+        //cada 0.1 segundo porque con 1 segundo daba tiempo a darle al checkin 2 veces y
+        //fichar de entrada 2 veces o salida 2 veces.
         val handler = Handler(Looper.getMainLooper())
         val runnable = object : Runnable {
             override fun run() {
@@ -96,6 +91,7 @@ class FichajeFragment : Fragment() {
 
                     var mesN = ""
 
+                    //Esto es para saber que numero es cada dia.
                     when (diaSemana) {
                         1 -> {
                             diaSemanaN = "Domingo"
@@ -126,6 +122,7 @@ class FichajeFragment : Fragment() {
                         }
                     }
 
+                    //Esto es para saber que numero es cada mes.
                     when (mes) {
                         0 -> {
                             mesN = "Enero"
@@ -184,18 +181,24 @@ class FichajeFragment : Fragment() {
 
                     val id = pref.getInt("id", 0)
 
+                    //Aqui hago el getCheckin para saber cual fue el ultimo checkin y
+                    //decirle si fue entrada que al hacer click se haga el de salida y viceversa.
                     if (token != null) {
 
                         viewModel.getCheckIn("Bearer $token", id)
 
                     }
 
+                    //Si es true se hace la entrada al hacer checkin y si es false se hace la salida.
                     val checkIn = pref.getBoolean(
                         "checking",
                         true
-                    ) // Neceseitor un getallchekingsby(id) y pikear el ultimo para saber cual es. entrar o salir.
+                    )
 
+                    //Esto lo he puesto dentro del bucle para que al hacer checkin
+                    //se cambie de entrada a salida y de salida a entrada.
                     if (checkIn) {
+                        //Este es para hacer entrada.
                         binding.imageButton.setImageResource(R.drawable.entrada_icon)
 
                         binding.imageButton.setOnClickListener {
@@ -212,7 +215,7 @@ class FichajeFragment : Fragment() {
                             val lastname = pref.getString("lastname", "")
 
                             if (token != null && name != null && lastname != null) {
-
+                                //Este es el AlertDialog.
                                 val builder = AlertDialog.Builder(requireContext())
                                 val view = layoutInflater.inflate(R.layout.alert, null)
                                 builder.setView(view)
@@ -245,7 +248,7 @@ class FichajeFragment : Fragment() {
                         }
 
                     } else {
-
+                        //Este es para hacer salida.
                         binding.imageButton.setImageResource(R.drawable.salida_icon)
 
                         binding.imageButton.setOnClickListener {
@@ -262,7 +265,7 @@ class FichajeFragment : Fragment() {
                             val lastname = pref.getString("lastname", "")
 
                             if (token != null && name != null && lastname != null) {
-
+                                //Este es el AlertDialog.
                                 val builder = AlertDialog.Builder(requireContext())
                                 val view = layoutInflater.inflate(R.layout.alert, null)
                                 builder.setView(view)
@@ -303,7 +306,7 @@ class FichajeFragment : Fragment() {
         }
 
         handler.post(runnable)
-
+        //Este boton es para ver los ultimos fichajes.
         binding.login.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_fichaje_to_consultaFichajeFragment)
             /*val builder = AlertDialog.Builder(requireContext())
@@ -428,20 +431,24 @@ class FichajeFragment : Fragment() {
         }
 
         viewModel.liveDataCheckIn.observe(viewLifecycleOwner, Observer {
+            //Si es true hace la entrada y si es false la salida.
             val checkIn = pref.getBoolean("checking", true)
             val builder2 = AlertDialog.Builder(requireContext())
             val view2 = layoutInflater.inflate(R.layout.alert_response, null)
+            //Si es true se pone a false.
             if (checkIn) {
                 val editor = pref.edit()
                 editor.putBoolean("checking", false)
                 editor.commit()
             } else {
+                //Si es false se pone a true.
                 val editor = pref.edit()
                 editor.putBoolean("checking", true)
                 editor.commit()
                 val textview = view2.findViewById<TextView>(R.id.textView16)
-                textview.setText("Salida registrada con exito!")//viva el betis
+                textview.setText("Salida registrada con exito!")
             }
+            //Un AlertDialog para que sepas que se realizo correctamente.
             builder2.setView(view2)
             val dialog2 = builder2.create()
             dialog2.show()
@@ -453,6 +460,7 @@ class FichajeFragment : Fragment() {
             }, 5000)
         })
 
+        //Esto pasa cuando el checkin da error, te muestra otro alertDialog pero en rojo.
         viewModel.liveDataCheckInError.observe(viewLifecycleOwner, Observer {
             val builder2 = AlertDialog.Builder(requireContext())
             val view2 = layoutInflater.inflate(R.layout.alert_response, null)
@@ -470,6 +478,8 @@ class FichajeFragment : Fragment() {
             }, 5000)
         })
 
+        //Esto es para recibir todos los checkin y saber si no hay hace la entrada
+        //Y si el ultimo fue entrada hace salida y si fue salida hace entrada.
         viewModel.liveDataCheckInList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isEmpty()) {
@@ -477,7 +487,7 @@ class FichajeFragment : Fragment() {
                     editor.putBoolean("checking", true)
                     editor.commit()
                 } else {
-                    val ultimoCheckin = it[0]
+                    val ultimoCheckin = it[it.size - 1]
                     if (ultimoCheckin.checkIn == true) {
                         val editor = pref.edit()
                         editor.putBoolean("checking", false)
@@ -491,6 +501,7 @@ class FichajeFragment : Fragment() {
             }
         })
 
+        //Esto es para recibir las tutorias y pasarselo al adaptador.
         viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer { it ->
             if (it != null) {
                 val calendar = Calendar.getInstance()
@@ -502,23 +513,30 @@ class FichajeFragment : Fragment() {
                 calendar.set(Calendar.MINUTE, 0)
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
-                val today = calendar.time
 
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
                 // La zona horaria se establece a la del sistema por defecto
                 dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
+                val editor = pref.edit()
+                editor.putBoolean("student", false)
+                editor.commit()
+
+                //Aqui con el roomId saco el nombre del aula y solo muestra los APPROVED o MODIFIED.
                 val filteredMentorings = it.filter {
+                    viewModel.getRoomId("Bearer $token", it.roomId)
+                    it.roomName = pref.getString("room", "")!!
+                    it.studentAndroid = pref.getBoolean("student", false)
                     val mentoringCalendar = Calendar.getInstance()
                     mentoringCalendar.timeZone = tz
-                    // Convierte la cadena de texto a un objeto Date
-                    val date = dateFormat.parse(it.date)
-                    mentoringCalendar.time = date
+                    val start = dateFormat.parse(it.start)
+                    mentoringCalendar.time = start
 
                     val mentoringYear = mentoringCalendar.get(Calendar.YEAR)
                     val mentoringMonth = mentoringCalendar.get(Calendar.MONTH)
                     val mentoringDay = mentoringCalendar.get(Calendar.DAY_OF_MONTH)
 
+                    //Esto hace que solo muestre las tutorias approved o modified que sean hoy.
                     val isToday = mentoringYear == calendar.get(Calendar.YEAR) &&
                             mentoringMonth == calendar.get(Calendar.MONTH) &&
                             mentoringDay == calendar.get(Calendar.DAY_OF_MONTH)
@@ -531,6 +549,15 @@ class FichajeFragment : Fragment() {
                 val adapter = TutoriasHotAdapter(filteredMentorings)
                 recyclerView.adapter = adapter
 
+            }
+        })
+
+        //Esto es para pasarle el roomId y sacar el nombre del aula.
+        viewModel.liveDataRoom.observe(viewLifecycleOwner, Observer { it ->
+            if (it != null) {
+                val editor = pref.edit()
+                editor.putString("room", it.name)
+                editor.commit()
             }
         })
     }

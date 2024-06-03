@@ -20,6 +20,8 @@ import retrofit2.http.Path
 
 interface ApiService {
 
+    //Aqui estan todos los get y post.
+
     @Headers("Content-Type: application/json")
     @POST("login")
     suspend fun login(
@@ -41,7 +43,7 @@ interface ApiService {
     ): Response<DataCheckInResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("/api/check-in/teacher/{id}")
+    @GET("/api/check-in/by-user/{id}")
     suspend fun checkInList(
         @Header("Authorization") token: String,
         @Path("id") id: Int

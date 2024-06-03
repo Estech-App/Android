@@ -1,30 +1,22 @@
 package com.example.estechapp.ui.profesorUI.grupos
 
-import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.estechapp.R
 import com.example.estechapp.databinding.FragmentGruposBinding
 import com.example.estechapp.ui.adapter.GrupoAdapter
 import com.example.estechapp.ui.adapter.HorarioAdapter
-import com.example.estechapp.data.models.Grupo
 import com.example.estechapp.data.models.Horario
 import java.util.Calendar
 
 class GruposFragment : Fragment() {
 
     private var _binding: FragmentGruposBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -55,6 +47,7 @@ class GruposFragment : Fragment() {
             )
         )
 
+        //Esto es para que se actualice la fecha y hora cada segundo
         val handler = Handler(Looper.getMainLooper())
         val runnable = object : Runnable {
             override fun run() {
@@ -73,6 +66,7 @@ class GruposFragment : Fragment() {
 
                     var mesN = ""
 
+                    //Esto es para saber que numero es cada dia.
                     when (diaSemana) {
                         1 -> {
                             diaSemanaN = "Domingo"
@@ -103,6 +97,7 @@ class GruposFragment : Fragment() {
                         }
                     }
 
+                    //Esto es para saber que numero es cada mes.
                     when (mes) {
                         0 -> {
                             mesN = "Enero"

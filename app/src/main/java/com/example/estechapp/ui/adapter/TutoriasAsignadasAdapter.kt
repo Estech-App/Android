@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.databinding.ItemTutoriasBinding
-import com.example.estechapp.data.models.Tutoria
 import java.util.Locale
 
 class TutoriasAsignadasAdapter(private val tutoria: List<DataMentoringResponse>) : RecyclerView.Adapter<TutoriasAsignadasAdapter.ViewHolder>() {
@@ -15,18 +14,25 @@ class TutoriasAsignadasAdapter(private val tutoria: List<DataMentoringResponse>)
 
         fun bind(tutoria: DataMentoringResponse){
             with(binding){
-                nombreAlumnoTutoria.text = tutoria.studentId.toString()
+                //Esto hace que si eres el profesor te muestre el nombre y apellidos del alumno.
+                //Y si eres el alumno que te muestre el nombre y apellidos del profesor.
+                if (tutoria.studentAndroid == false) {
+                    binding.nombreAlumnoTutoria.text = tutoria.student.name + " " + tutoria.student.lastname
+                } else {
+                    binding.nombreAlumnoTutoria.text = tutoria.teacher.name + " " + tutoria.teacher.lastname
+                }
 
                 // Formatear la fecha
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
                 val outputFormat = SimpleDateFormat("d/M", Locale.getDefault())
                 val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                val date = inputFormat.parse(tutoria.date)
-                val time = inputFormat.parse(tutoria.date)
-                diaTutoria.text = outputFormat.format(date)
+                val start = inputFormat.parse(tutoria.start)
+                val startTime = inputFormat.parse(tutoria.start)
+                val endTime = inputFormat.parse(tutoria.end)
+                diaTutoria.text = outputFormat.format(start)
 
-                aulaTutoria.text = tutoria.roomId.toString()
-                horaTutoria.text = timeFormat.format(time)
+                aulaTutoria.text = tutoria.roomName
+                horaTutoria.text = timeFormat.format(startTime) + " - " + timeFormat.format(endTime)
             }
         }
     }

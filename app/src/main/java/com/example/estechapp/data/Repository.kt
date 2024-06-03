@@ -9,6 +9,8 @@ import com.example.estechapp.data.network.RetrofitHelper
 
 class Repository(val context: Context) {
 
+    //Este es el repositorio con todos los get y post.
+
     private val retrofit = RetrofitHelper.getRetrofit()
 
     suspend fun postLogin(loginModel: DataLoginModel) = retrofit.login(loginModel)
