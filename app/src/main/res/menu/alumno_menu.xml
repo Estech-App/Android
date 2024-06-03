@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home_alumno"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+    <item
+        android:id="@+id/navigation_tutorias_alumno"
+        android:icon="@drawable/calendario_svg"
+        android:title="Tutorias" />
+
+    <item
+        android:id="@+id/navigation_practicaLibre"
+        android:icon="@drawable/laptop_alt_2_svgrepo_com"
+        android:title="Practica Libre" />
+
+    <item
+        android:id="@+id/navigation_grupo_alumno"
+        android:icon="@drawable/grupos_svg"
+        android:title="Grupo X" />
+
+</menu>

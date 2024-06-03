@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">EstechApp</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="tutorias">Tutorias</string>
+    <string name="fichaje">Fichaje</string>
+    <string name="Tutorias">Tutorias\n</string>
+    <string name="grupos">Grupos</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
