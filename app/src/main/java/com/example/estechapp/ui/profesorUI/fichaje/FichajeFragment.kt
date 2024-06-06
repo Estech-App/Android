@@ -309,125 +309,6 @@ class FichajeFragment : Fragment() {
         //Este boton es para ver los ultimos fichajes.
         binding.login.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_fichaje_to_consultaFichajeFragment)
-            /*val builder = AlertDialog.Builder(requireContext())
-            val view = layoutInflater.inflate(R.layout.alert3, null)
-            builder.setView(view)
-            val dialog = builder.create()
-            dialog.show()*/
-            /*val builder = AlertDialog.Builder(requireContext())
-            val view = layoutInflater.inflate(R.layout.dialog, null)
-
-            builder.setView(view)
-
-            val dialog = builder.create()
-            dialog.show()
-
-            val button = view.findViewById<Button>(R.id.button3)
-            button.setText("Hola")
-            button.setOnClickListener {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-
-                val dpd = DatePickerDialog(
-                    requireContext(),
-                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                        // Aquí puedes manejar la fecha seleccionada
-                        Toast.makeText(
-                            requireContext(),
-                            "$dayOfMonth/${monthOfYear + 1}/$year",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    },
-                    year,
-                    month,
-                    day
-                )
-
-                dpd.show() // Esto mostrará el DatePickerDialog
-            }
-
-            // Primero, define los elementos del Spinner en un array
-            val elementos = arrayOf("Elige", "Elemento 1", "Elemento 2", "Elemento 3")
-
-// Crea un ArrayAdapter usando el array de strings y el layout predeterminado del Spinner
-            val adapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, elementos)
-
-// Especifica el layout a usar cuando aparece la lista de opciones
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-// Aplica el adaptador al Spinner
-            val spinner = view.findViewById<Spinner>(R.id.spinner1)
-            spinner.adapter = adapter
-
-// Define el comportamiento cuando se selecciona un elemento
-            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    val elementoSeleccionado = parent.getItemAtPosition(position) as String
-                    // Aquí puedes manejar el elemento seleccionado
-                    Toast.makeText(
-                        requireContext(),
-                        "Seleccionaste: $elementoSeleccionado",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Aquí puedes manejar cuando no se selecciona ningún elemento
-                }
-            }
-
-            val button1 = view.findViewById<Button>(R.id.button1)
-
-            button1.setOnClickListener {
-
-            val tpd = TimePickerDialog(
-                requireContext(),
-                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                    // Aquí puedes manejar la hora seleccionada
-                    Toast.makeText(
-                        requireContext(),
-                        "$hourOfDay:$minute",
-                        Toast.LENGTH_LONG
-                    ).show()
-                },
-                12, 0, true
-            )
-            tpd.show()
-
-                dialog.dismiss()
-            }
-
-            val button2 = view.findViewById<Button>(R.id.button2)
-
-            button2.setOnClickListener {
-                dialog.dismiss()
-
-                val builder2 = AlertDialog.Builder(requireContext())
-                val view2 = layoutInflater.inflate(
-                    R.layout.dialog2,
-                    null
-                ) // Asegúrate de cambiar esto al layout correcto
-
-                builder2.setView(view2)
-
-                val dialog2 = builder2.create()
-                dialog2.show()
-
-                // Cerrar el segundo diálogo después de 3 segundos
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (dialog2.isShowing) {
-                        dialog2.dismiss()
-                    }
-                }, 3000) // 3000 milisegundos equivalen a 3 segundos
-            }*/
         }
 
         viewModel.liveDataCheckIn.observe(viewLifecycleOwner, Observer {
@@ -502,7 +383,7 @@ class FichajeFragment : Fragment() {
         })
 
         //Esto es para recibir las tutorias y pasarselo al adaptador.
-        viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer { it ->
+        viewModel.liveDataMentoringList.observe(viewLifecycleOwner, Observer { it ->
             if (it != null) {
                 val calendar = Calendar.getInstance()
                 // La zona horaria se establece a la del sistema por defecto
@@ -524,7 +405,7 @@ class FichajeFragment : Fragment() {
 
                 //Aqui con el roomId saco el nombre del aula y solo muestra los APPROVED o MODIFIED.
                 val filteredMentorings = it.filter {
-                    viewModel.getRoomId("Bearer $token", it.roomId)
+                    viewModel.getRoomId("Bearer $token", it.roomId!!)
                     it.roomName = pref.getString("room", "")!!
                     it.studentAndroid = pref.getBoolean("student", false)
                     val mentoringCalendar = Calendar.getInstance()

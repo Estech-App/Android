@@ -1,13 +1,13 @@
 package com.example.estechapp.data.models
 
 data class DataMentoringResponse(
-    val id: Int,
-    val start: String,
-    val end: String,
-    val roomId: Int,
-    val status: String,
-    val teacher: UserFull,
-    val student: UserFull,
-    var roomName: String,
-    var studentAndroid: Boolean
+    val id: Int? = null,
+    val start: String? = null,
+    val end: String? = null,
+    val roomId: Int? = null,
+    val status: String? = null,
+    val teacher: UserFull? = null,
+    val student: UserFull? = null,
+    var roomName: String? = null,
+    var studentAndroid: Boolean? = null
 )

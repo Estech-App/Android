@@ -176,7 +176,7 @@ class HomeAlumnoFragment : Fragment() {
 
         handler.post(runnable)
 
-        viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer { it ->
+        viewModel.liveDataMentoringList.observe(viewLifecycleOwner, Observer { it ->
             //Esto es para recibir todas las tutorias por id.
             if (it != null) {
                 val calendar = Calendar.getInstance()
@@ -200,7 +200,7 @@ class HomeAlumnoFragment : Fragment() {
 
                 val filteredMentorings = it.filter {
                     //Aqui va poniendo el booleano de student y el roomName.
-                    viewModel.getRoomId("Bearer $token", it.roomId)
+                    viewModel.getRoomId("Bearer $token", it.roomId!!)
                     it.roomName = pref.getString("room", "")!!
                     it.studentAndroid = pref.getBoolean("student", true)
                     val mentoringCalendar = Calendar.getInstance()

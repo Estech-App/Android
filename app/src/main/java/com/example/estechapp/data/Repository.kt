@@ -4,7 +4,8 @@ import android.content.Context
 import com.example.estechapp.data.models.DataCheckInModel
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
-import com.example.estechapp.data.models.DataTimeTableModel
+import com.example.estechapp.data.models.DataMentoringModel
+import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.network.RetrofitHelper
 
 class Repository(val context: Context) {
@@ -30,6 +31,12 @@ class Repository(val context: Context) {
     suspend fun getRoomList(token: String) = retrofit.roomList(token)
 
     suspend fun getRoomById(token: String, id: Int) = retrofit.roomById(token, id)
+
+    suspend fun getAllRoles(token: String) = retrofit.roleList(token)
+
+    suspend fun getUserByRole(token: String, role: Int) = retrofit.userByRole(token, role)
+
+    suspend fun patchMentoring(token: String, id: Int, mentoringModel: DataMentoringModelPatch) = retrofit.mentoringPatch(token, id, mentoringModel)
 
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
 
