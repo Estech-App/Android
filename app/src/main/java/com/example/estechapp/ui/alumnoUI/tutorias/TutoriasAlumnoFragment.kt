@@ -21,9 +21,7 @@ import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoomModel
 import com.example.estechapp.databinding.FragmentTutoriasAlumnoBinding
 import com.example.estechapp.ui.MyViewModel
-import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
 import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapterAlumno
-import com.example.estechapp.ui.adapter.TutoriasPendientesAdapter
 import com.example.estechapp.ui.adapter.TutoriasPendientesAdapterAlumno
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -118,7 +116,7 @@ class TutoriasAlumnoFragment : Fragment() {
 
                 for (mentoring in it) {
                     if (mentoring.roomId == null) {
-
+                        mentoringModel.add(DataRoomModel(null, null))
                     } else {
                         mentoringModel.add(DataRoomModel(mentoring.roomId, null))
                         mentoring.studentAndroid = pref.getBoolean("student", true)

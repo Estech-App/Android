@@ -1,6 +1,5 @@
 package com.example.estechapp.ui.alumnoUI.home
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -9,13 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.estechapp.R
-import com.example.estechapp.databinding.FragmentFichajeBinding
 import com.example.estechapp.databinding.FragmentHomeAlumnoBinding
 import com.example.estechapp.ui.MyViewModel
 import com.example.estechapp.ui.adapter.TutoriasHotAdapter
@@ -200,8 +195,12 @@ class HomeAlumnoFragment : Fragment() {
 
                 val filteredMentorings = it.filter {
                     //Aqui va poniendo el booleano de student y el roomName.
-                    viewModel.getRoomId("Bearer $token", it.roomId!!)
-                    it.roomName = pref.getString("room", "")!!
+                    if (it.roomId == null) {
+                        it.roomName = null
+                    } else {
+                        viewModel.getRoomId("Bearer $token", it.roomId)
+                        it.roomName = pref.getString("room", "")!!
+                    }
                     it.studentAndroid = pref.getBoolean("student", true)
                     val mentoringCalendar = Calendar.getInstance()
                     mentoringCalendar.timeZone = tz

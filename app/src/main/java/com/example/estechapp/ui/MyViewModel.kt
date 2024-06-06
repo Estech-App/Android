@@ -11,7 +11,6 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
-import com.example.estechapp.data.models.DataMentoringModel
 import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoleResponse
@@ -19,7 +18,6 @@ import com.example.estechapp.data.models.DataRoomResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.User
 import com.example.estechapp.data.models.UserFull
-import com.example.estechapp.data.models.UserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -171,7 +169,6 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
-    @SuppressLint("NullSafeMutableLiveData")
     fun getRoleList(
         token: String
     ) {
@@ -179,7 +176,7 @@ class MyViewModel(val context: Context) : ViewModel() {
             val response = repository.getAllRoles(token)
             if (response.isSuccessful) {
                 val myResponse = response.body()
-                liveDataRoleList.postValue(myResponse)
+                liveDataRoleList.postValue(myResponse!!)
             }
         }
     }
