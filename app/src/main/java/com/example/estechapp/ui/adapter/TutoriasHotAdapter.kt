@@ -20,9 +20,9 @@ class TutoriasHotAdapter(private val tutorias: List<DataMentoringResponse>) :
             //Esto hace que si eres el profesor te muestre el nombre y apellido del alumno.
             //Y si eres alumno te muestre el nombre y apellido del profesor.
             if (tutoria.studentAndroid == false) {
-                binding.nombre.text = tutoria.student.name + " " + tutoria.student.lastname
+                binding.nombre.text = tutoria.student!!.name + " " + tutoria.student!!.lastname
             } else {
-                binding.nombre.text = tutoria.teacher.name + " " + tutoria.teacher.lastname
+                binding.nombre.text = tutoria.teacher!!.name + " " + tutoria.teacher!!.lastname
             }
             binding.curso.text = "Animaciones 2º"
             //Aqui uso el roomName en vez de roomId

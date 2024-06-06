@@ -2,7 +2,6 @@ package com.example.estechapp.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.health.connect.datatypes.DistanceRecord
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,10 +11,15 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
+import com.example.estechapp.data.models.DataMentoringModel
+import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.models.DataMentoringResponse
+import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.User
+import com.example.estechapp.data.models.UserFull
+import com.example.estechapp.data.models.UserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,9 +36,12 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataCheckIn = SingleLiveEvent<DataCheckInResponse>()
     val liveDataCheckInError = SingleLiveEvent<String>()
     val liveDataCheckInList = MutableLiveData<List<DataCheckInResponse>>()
-    val liveDataMentoring = MutableLiveData<List<DataMentoringResponse>>()
+    val liveDataMentoringList = MutableLiveData<List<DataMentoringResponse>>()
+    val liveDataMentoring = SingleLiveEvent<DataMentoringResponse>()
     val liveDataRoomList = MutableLiveData<List<DataRoomResponse>>()
     val liveDataRoom = MutableLiveData<DataRoomResponse>()
+    val liveDataRoleList = MutableLiveData<List<DataRoleResponse>>()
+    val liveDataUserRoleList = MutableLiveData<List<UserFull>>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
 
     //Todas las funciones son casi iguales
@@ -114,7 +121,7 @@ class MyViewModel(val context: Context) : ViewModel() {
             val response = repository.getMentoringTeacher(token, id)
             if (response.isSuccessful) {
                 val myResponse = response.body()
-                liveDataMentoring.postValue(myResponse)
+                liveDataMentoringList.postValue(myResponse)
             }
         }
     }
@@ -130,7 +137,7 @@ class MyViewModel(val context: Context) : ViewModel() {
             val response = repository.getMentoringStudent(token, id)
             if (response.isSuccessful) {
                 val myResponse = response.body()
-                liveDataMentoring.postValue(myResponse)
+                liveDataMentoringList.postValue(myResponse)
             }
         }
     }
@@ -160,6 +167,53 @@ class MyViewModel(val context: Context) : ViewModel() {
             if (response.isSuccessful) {
                 val myResponse = response.body()
                 liveDataRoom.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getRoleList(
+        token: String
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getAllRoles(token)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataRoleList.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getUserByRole(
+        token: String,
+        role: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getUserByRole(token, role)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataUserRoleList.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun patchMentoring(
+        token: String,
+        id: Int,
+        start: String?,
+        end: String?,
+        roomId: Int?,
+        status: String?
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val mentoringModel = DataMentoringModelPatch(start, end, roomId, status)
+            val response = repository.patchMentoring(token, id, mentoringModel)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataMentoring.postValue(myResponse)
             }
         }
     }

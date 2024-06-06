@@ -5,6 +5,6 @@ data class DataMentoringModel(
     val end: String,
     val roomId: Int,
     val status: String,
-    val teacherId: Int,
-    val studentId: Int
+    val teacher: UserId,
+    val student: UserId
 )

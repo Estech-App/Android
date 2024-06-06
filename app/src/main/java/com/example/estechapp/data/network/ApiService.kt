@@ -5,16 +5,19 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
+import com.example.estechapp.data.models.DataMentoringModel
+import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.models.DataMentoringResponse
+import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
-import com.example.estechapp.data.models.DataTimeTableModel
-import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
+import com.example.estechapp.data.models.UserFull
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -75,6 +78,27 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: Int
     ): Response<DataRoomResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("api/role")
+    suspend fun roleList(
+        @Header("Authorization") token: String
+    ): Response<List<DataRoleResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("api/user/find-by-role/{role}")
+    suspend fun userByRole(
+        @Header("Authorization") token: String,
+        @Path("role") role: Int
+    ): Response<List<UserFull>>
+
+    @Headers("Content-Type: application/json")
+    @PATCH("/api/mentoring/{id}")
+    suspend fun mentoringPatch(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+        @Body mentoringModel: DataMentoringModelPatch
+    ): Response<DataMentoringResponse>
 
     /*@Headers("Content-Type: application/json")
     @GET("/api/time-table")

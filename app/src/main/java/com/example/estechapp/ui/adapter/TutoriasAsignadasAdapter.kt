@@ -5,21 +5,37 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.data.models.DataMentoringResponse
-import com.example.estechapp.databinding.ItemTutoriasBinding
+import com.example.estechapp.databinding.ItemTutoriasAsignadasBinding
 import java.util.Locale
 
-class TutoriasAsignadasAdapter(private val tutoria: List<DataMentoringResponse>) : RecyclerView.Adapter<TutoriasAsignadasAdapter.ViewHolder>() {
+class TutoriasAsignadasAdapter(private val tutoria: List<DataMentoringResponse>) :
+    RecyclerView.Adapter<TutoriasAsignadasAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemTutoriasBinding): RecyclerView.ViewHolder(binding.root){
+        interface EliminarTutoriaListener {
+            fun eliminarTutoria(item: DataMentoringResponse)
+        }
 
-        fun bind(tutoria: DataMentoringResponse){
-            with(binding){
+    interface ModificarTutoriaListener {
+        fun modificarTutoria(item: DataMentoringResponse)
+    }
+
+    var eliminarTutoriasListener: EliminarTutoriaListener? = null
+
+    var modificarTutoriaListener: ModificarTutoriaListener? = null
+
+    class ViewHolder(val binding: ItemTutoriasAsignadasBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(tutoria: DataMentoringResponse) {
+            with(binding) {
                 //Esto hace que si eres el profesor te muestre el nombre y apellidos del alumno.
                 //Y si eres el alumno que te muestre el nombre y apellidos del profesor.
                 if (tutoria.studentAndroid == false) {
-                    binding.nombreAlumnoTutoria.text = tutoria.student.name + " " + tutoria.student.lastname
+                    binding.nombreAlumnoTutoria.text =
+                        tutoria.student!!.name + " " + tutoria.student.lastname
                 } else {
-                    binding.nombreAlumnoTutoria.text = tutoria.teacher.name + " " + tutoria.teacher.lastname
+                    binding.nombreAlumnoTutoria.text =
+                        tutoria.teacher!!.name + " " + tutoria.teacher.lastname
                 }
 
                 // Formatear la fecha
@@ -38,7 +54,7 @@ class TutoriasAsignadasAdapter(private val tutoria: List<DataMentoringResponse>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemTutoriasBinding.inflate(
+        val binding = ItemTutoriasAsignadasBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
 
@@ -49,5 +65,13 @@ class TutoriasAsignadasAdapter(private val tutoria: List<DataMentoringResponse>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tutoria[position])
+
+        holder.binding.denegar.setOnClickListener {
+            eliminarTutoriasListener?.eliminarTutoria(tutoria[position])
+        }
+
+        holder.binding.editar.setOnClickListener {
+            modificarTutoriaListener?.modificarTutoria(tutoria[position])
+        }
     }
 }
