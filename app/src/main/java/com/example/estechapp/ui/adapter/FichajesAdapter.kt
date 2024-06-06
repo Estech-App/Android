@@ -5,13 +5,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.R
-import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.FichajePair
 import com.example.estechapp.databinding.ItemConsultaFichajeBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import com.example.estechapp.data.models.Fichaje
 
 class FichajesAdapter(private val fichajes: List<FichajePair>) :
     RecyclerView.Adapter<FichajesAdapter.ViewHolder>() {

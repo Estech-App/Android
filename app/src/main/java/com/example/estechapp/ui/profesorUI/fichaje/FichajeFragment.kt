@@ -395,7 +395,8 @@ class FichajeFragment : Fragment() {
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
 
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+                val dateFormat =
+                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
                 // La zona horaria se establece a la del sistema por defecto
                 dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
@@ -405,8 +406,12 @@ class FichajeFragment : Fragment() {
 
                 //Aqui con el roomId saco el nombre del aula y solo muestra los APPROVED o MODIFIED.
                 val filteredMentorings = it.filter {
-                    viewModel.getRoomId("Bearer $token", it.roomId!!)
-                    it.roomName = pref.getString("room", "")!!
+                    if (it.roomId == null) {
+                        it.roomName = null
+                    } else {
+                        viewModel.getRoomId("Bearer $token", it.roomId)
+                        it.roomName = pref.getString("room", "")!!
+                    }
                     it.studentAndroid = pref.getBoolean("student", false)
                     val mentoringCalendar = Calendar.getInstance()
                     mentoringCalendar.timeZone = tz

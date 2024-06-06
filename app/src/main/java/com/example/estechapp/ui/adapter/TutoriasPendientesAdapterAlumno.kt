@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.databinding.ItemTutoriasPendientesAlumnoBinding
-import com.example.estechapp.databinding.ItemTutoriasPendientesBinding
 import java.util.Locale
 
 class TutoriasPendientesAdapterAlumno(private val tutoria: List<DataMentoringResponse>) :

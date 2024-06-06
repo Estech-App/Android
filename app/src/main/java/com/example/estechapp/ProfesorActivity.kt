@@ -1,8 +1,6 @@
 package com.example.estechapp
 
-import android.content.Context
 import android.os.Bundle
-import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -14,7 +12,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.estechapp.databinding.ProfesorMainBinding
-import com.example.estechapp.ui.MyViewModel
 
 class ProfesorActivity : AppCompatActivity() {
 

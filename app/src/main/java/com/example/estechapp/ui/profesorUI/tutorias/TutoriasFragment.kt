@@ -1,6 +1,5 @@
 package com.example.estechapp.ui.profesorUI.tutorias
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -18,13 +17,11 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estechapp.R
-import com.example.estechapp.data.models.DataMentoringModel
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoomModel
 import com.example.estechapp.databinding.FragmentTutoriasBinding
@@ -47,7 +44,7 @@ class TutoriasFragment : Fragment() {
 
     private lateinit var roomsId: Map<String, Int>
 
-    private lateinit var roomNames: Map<Int, String>
+    private lateinit var roomNames: Map<Int, String?>
 
     private val viewModel by viewModels<MyViewModel> {
         MyViewModel.MyViewModelFactory(requireContext())
@@ -123,7 +120,7 @@ class TutoriasFragment : Fragment() {
         }*/
 
         viewModel.liveDataRoomList.observe(viewLifecycleOwner, Observer {
-            roomNames = it.associateBy({ it.id }, { it.name })
+            roomNames = it?.associateBy({ it.id }, { it.id?.run { it.name } ?: null }) ?: emptyMap()
             liveDataRoomCompleted = true
         })
 
@@ -154,7 +151,7 @@ class TutoriasFragment : Fragment() {
                 //Aqui con el roomId saco el roomName
                 for (mentoring in mentoringList) {
                     if (mentoring.roomId == null) {
-
+                        mentoringModel.add(DataRoomModel(null, null))
                     } else {
                         mentoringModel.add(DataRoomModel(mentoring.roomId, null))
                         mentoring.studentAndroid = pref.getBoolean("student", false)

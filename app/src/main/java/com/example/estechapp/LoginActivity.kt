@@ -1,6 +1,5 @@
 package com.example.estechapp
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -25,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
         MyViewModel.MyViewModelFactory(this)
     }
 
-    @SuppressLint("ApplySharedPref")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginMainBinding.inflate(layoutInflater)
