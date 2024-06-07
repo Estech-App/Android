@@ -2,6 +2,7 @@ package com.example.estechapp.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
+import com.example.estechapp.data.models.DataMentoringModel
 import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoleResponse
@@ -18,6 +20,7 @@ import com.example.estechapp.data.models.DataRoomResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.User
 import com.example.estechapp.data.models.UserFull
+import com.example.estechapp.data.models.UserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,6 +44,16 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataRoleList = MutableLiveData<List<DataRoleResponse>>()
     val liveDataUserRoleList = MutableLiveData<List<UserFull>>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
+    val liveDataRoomAndMentoring = MediatorLiveData<Pair<List<DataRoomResponse>,List<DataMentoringResponse>>>()
+
+    init {
+        liveDataRoomAndMentoring.addSource(liveDataRoomList) { rooms ->
+            liveDataRoomAndMentoring.value = Pair(rooms, liveDataMentoringList.value ?: emptyList())
+        }
+        liveDataRoomAndMentoring.addSource(liveDataMentoringList) { mentorings ->
+            liveDataRoomAndMentoring.value = Pair(liveDataRoomList.value ?: emptyList(), mentorings)
+        }
+    }
 
     //Todas las funciones son casi iguales
     //El postLogin para hacer el login y recibir el correo para luego pasarselo al postEmail.
@@ -191,6 +204,28 @@ class MyViewModel(val context: Context) : ViewModel() {
             if (response.isSuccessful) {
                 val myResponse = response.body()
                 liveDataUserRoleList.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun postMentoring(
+        token: String,
+        start: String,
+        end: String,
+        roomId: Int?,
+        status: String,
+        teacherId: Int,
+        studentId: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val teacher = UserId(teacherId)
+            val student = UserId(studentId)
+            val mentoringModel = DataMentoringModel(start, end, roomId, status, teacher, student)
+            val response = repository.postMentoring(token, mentoringModel)
+            if(response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataMentoring.postValue(myResponse)
             }
         }
     }

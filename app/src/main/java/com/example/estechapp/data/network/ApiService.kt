@@ -93,6 +93,13 @@ interface ApiService {
     ): Response<List<UserFull>>
 
     @Headers("Content-Type: application/json")
+    @POST("/api/mentoring")
+    suspend fun mentoringPost(
+        @Header("Authorization") token: String,
+        @Body mentoringModel: DataMentoringModel
+    ): Response<DataMentoringResponse>
+
+    @Headers("Content-Type: application/json")
     @PATCH("/api/mentoring/{id}")
     suspend fun mentoringPatch(
         @Header("Authorization") token: String,

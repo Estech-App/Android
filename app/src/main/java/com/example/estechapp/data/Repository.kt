@@ -36,6 +36,8 @@ class Repository(val context: Context) {
 
     suspend fun getUserByRole(token: String, role: Int) = retrofit.userByRole(token, role)
 
+    suspend fun postMentoring(token: String, mentoringModel: DataMentoringModel) = retrofit.mentoringPost(token, mentoringModel)
+
     suspend fun patchMentoring(token: String, id: Int, mentoringModel: DataMentoringModelPatch) = retrofit.mentoringPatch(token, id, mentoringModel)
 
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
