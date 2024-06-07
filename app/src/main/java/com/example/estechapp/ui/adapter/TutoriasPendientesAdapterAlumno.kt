@@ -3,7 +3,9 @@ package com.example.estechapp.ui.adapter
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.estechapp.R
 import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.databinding.ItemTutoriasPendientesAlumnoBinding
 import java.util.Locale
@@ -62,6 +64,13 @@ class TutoriasPendientesAdapterAlumno(private val tutoria: List<DataMentoringRes
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tutoria[position])
+        if (position % 2 == 0) {
+            val gris = ContextCompat.getColor(holder.itemView.context, R.color.gris)
+            holder.binding.bg.setBackgroundColor(gris)
+        } else {
+            val blanco = ContextCompat.getColor(holder.itemView.context, R.color.white)
+            holder.binding.bg.setBackgroundColor(blanco)
+        }
 
         holder.binding.denegar.setOnClickListener {
             eliminarTutoriaListener?.eliminarTutoria(tutoria[position])
