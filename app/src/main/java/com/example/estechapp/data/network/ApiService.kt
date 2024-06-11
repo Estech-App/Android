@@ -3,6 +3,9 @@ package com.example.estechapp.data.network
 import com.example.estechapp.data.models.DataCheckInModel
 import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
+import com.example.estechapp.data.models.DataFreeUsageModel
+import com.example.estechapp.data.models.DataFreeUsageModelPatch
+import com.example.estechapp.data.models.DataFreeUsageResponse
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
 import com.example.estechapp.data.models.DataMentoringModel
@@ -106,6 +109,28 @@ interface ApiService {
         @Path("id") id: Int,
         @Body mentoringModel: DataMentoringModelPatch
     ): Response<DataMentoringResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/free-usage/by-student/{id}")
+    suspend fun freeUsageList(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Response<List<DataFreeUsageResponse>>
+
+    @Headers("Content-Type: application/json")
+    @PATCH("/api/free-usage/{id}")
+    suspend fun freeUsagePatch(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+        @Body freeUsageModel: DataFreeUsageModelPatch
+    ): Response<DataFreeUsageResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/free-usage")
+    suspend fun freeUsagePost(
+        @Header("Authorization") token: String,
+        @Body freeUsageModel: DataFreeUsageModel
+    ): Response<DataFreeUsageResponse>
 
     /*@Headers("Content-Type: application/json")
     @GET("/api/time-table")

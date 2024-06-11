@@ -10,6 +10,9 @@ import com.example.estechapp.data.Repository
 import com.example.estechapp.data.models.DataCheckInModel
 import com.example.estechapp.data.models.DataCheckInResponse
 import com.example.estechapp.data.models.DataEmailModel
+import com.example.estechapp.data.models.DataFreeUsageModel
+import com.example.estechapp.data.models.DataFreeUsageModelPatch
+import com.example.estechapp.data.models.DataFreeUsageResponse
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataLoginResponse
 import com.example.estechapp.data.models.DataMentoringModel
@@ -18,6 +21,7 @@ import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
+import com.example.estechapp.data.models.RoomId
 import com.example.estechapp.data.models.User
 import com.example.estechapp.data.models.UserFull
 import com.example.estechapp.data.models.UserId
@@ -45,6 +49,9 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataUserRoleList = MutableLiveData<List<UserFull>>()
     //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
     val liveDataRoomAndMentoring = MediatorLiveData<Pair<List<DataRoomResponse>,List<DataMentoringResponse>>>()
+    val liveDataFreeUsage = SingleLiveEvent<DataFreeUsageResponse>()
+    val liveDataFreeUsageList = MutableLiveData<List<DataFreeUsageResponse>>()
+    val liveDataRoomAndFreeUsage = MediatorLiveData<Pair<List<DataRoomResponse>,List<DataFreeUsageResponse>>>()
 
     init {
         liveDataRoomAndMentoring.addSource(liveDataRoomList) { rooms ->
@@ -52,6 +59,15 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
         liveDataRoomAndMentoring.addSource(liveDataMentoringList) { mentorings ->
             liveDataRoomAndMentoring.value = Pair(liveDataRoomList.value ?: emptyList(), mentorings)
+        }
+    }
+
+    init {
+        liveDataRoomAndFreeUsage.addSource(liveDataRoomList) { rooms ->
+            liveDataRoomAndFreeUsage.value = Pair(rooms, liveDataFreeUsageList.value ?: emptyList())
+        }
+        liveDataRoomAndFreeUsage.addSource(liveDataFreeUsageList) { freeUsage ->
+            liveDataRoomAndFreeUsage.value = Pair(liveDataRoomList.value ?: emptyList(), freeUsage)
         }
     }
 
@@ -246,6 +262,57 @@ class MyViewModel(val context: Context) : ViewModel() {
             if (response.isSuccessful) {
                 val myResponse = response.body()
                 liveDataMentoring.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getFreeUsage(
+        token: String,
+        id: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getFreeUsage(token, id)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataFreeUsageList.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun patchFreeUsage(
+        token: String,
+        id: Int,
+        status: String
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val freeUsageModel = DataFreeUsageModelPatch(status)
+            val response = repository.patchFreeUsage(token, id, freeUsageModel)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataFreeUsage.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun postFreeUsage(
+        token: String,
+        start: String,
+        end: String,
+        status: String,
+        roomId: Int,
+        userId: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val room = RoomId(roomId)
+            val user = UserId(userId)
+            val freeUsageModel = DataFreeUsageModel(start, end, status, room, user)
+            val response = repository.postFreeUsage(token, freeUsageModel)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataFreeUsage.postValue(myResponse)
             }
         }
     }

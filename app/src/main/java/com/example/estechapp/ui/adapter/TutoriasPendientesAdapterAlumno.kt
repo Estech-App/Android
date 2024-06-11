@@ -24,7 +24,13 @@ class TutoriasPendientesAdapterAlumno(private val tutoria: List<DataMentoringRes
 
         fun bind(tutoria: DataMentoringResponse) {
             with(binding) {
-                nombreAlumnoTutoria.text = tutoria.student!!.name + " " + tutoria.student!!.lastname
+                if (tutoria.studentAndroid == false) {
+                    binding.nombreAlumnoTutoria.text =
+                        tutoria.student!!.name + " " + tutoria.student.lastname
+                } else {
+                    binding.nombreAlumnoTutoria.text =
+                        tutoria.teacher!!.name + " " + tutoria.teacher.lastname
+                }
 
                 // Formatear la fecha
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())

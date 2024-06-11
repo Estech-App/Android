@@ -3,6 +3,8 @@ package com.example.estechapp.data
 import android.content.Context
 import com.example.estechapp.data.models.DataCheckInModel
 import com.example.estechapp.data.models.DataEmailModel
+import com.example.estechapp.data.models.DataFreeUsageModel
+import com.example.estechapp.data.models.DataFreeUsageModelPatch
 import com.example.estechapp.data.models.DataLoginModel
 import com.example.estechapp.data.models.DataMentoringModel
 import com.example.estechapp.data.models.DataMentoringModelPatch
@@ -39,6 +41,12 @@ class Repository(val context: Context) {
     suspend fun postMentoring(token: String, mentoringModel: DataMentoringModel) = retrofit.mentoringPost(token, mentoringModel)
 
     suspend fun patchMentoring(token: String, id: Int, mentoringModel: DataMentoringModelPatch) = retrofit.mentoringPatch(token, id, mentoringModel)
+
+    suspend fun getFreeUsage(token: String, id: Int) = retrofit.freeUsageList(token, id)
+
+    suspend fun patchFreeUsage(token: String, id: Int, freeUsageModel: DataFreeUsageModelPatch) = retrofit.freeUsagePatch(token, id, freeUsageModel)
+
+    suspend fun postFreeUsage(token: String, freeUsageModel: DataFreeUsageModel) = retrofit.freeUsagePost(token, freeUsageModel)
 
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
 
