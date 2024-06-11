@@ -6,11 +6,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/nombre_alumno"
+        android:id="@+id/nombrealumno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="Ramon Morillas Serrano"
+        android:text="Pepe"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/orden"
