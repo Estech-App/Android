@@ -10,12 +10,11 @@
         android:id="@+id/cardView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
         app:cardBackgroundColor="#81EDEDED"
         app:cardElevation="0sp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView11"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="@+id/cardView11"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -54,13 +53,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toBottomOf="@+id/cardView13">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -91,14 +89,14 @@
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" >
+                app:layout_constraintTop_toBottomOf="@+id/textView13">
 
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerPracticas"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="250dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -106,6 +104,60 @@
                 app:layout_constraintStart_toStartOf="@+id/cardView7"
                 app:layout_constraintTop_toBottomOf="@+id/cardView7" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView15"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView11">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Practicas libres pendientes de asignar"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView14"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                app:cardBackgroundColor="#000000"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView19"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" >
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPracticasPendientes"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView14"
+                app:layout_constraintStart_toStartOf="@+id/cardView14"
+                app:layout_constraintTop_toBottomOf="@+id/cardView14" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

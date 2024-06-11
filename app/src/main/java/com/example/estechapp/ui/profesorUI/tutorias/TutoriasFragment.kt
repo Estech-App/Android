@@ -42,6 +42,10 @@ class TutoriasFragment : Fragment() {
 
     private lateinit var rooms: Array<String>
 
+    private lateinit var hours: Array<String>
+
+    private lateinit var occupededHours: Array<Pair<String, String>>
+
     private lateinit var roomsId: Map<String, Int>
 
     private lateinit var roomNames: Map<Int, String?>
@@ -65,6 +69,35 @@ class TutoriasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        hours = arrayOf(
+            "8:30",
+            "9:00",
+            "9:30",
+            "10:00",
+            "10:30",
+            "11:00",
+            "11:30",
+            "12:00",
+            "12:30",
+            "13:00",
+            "13:30",
+            "14:00",
+            "14:30",
+            "15:30",
+            "16:00",
+            "16:30",
+            "17:00",
+            "17:30",
+            "18:00",
+            "18:30",
+            "19:00",
+            "19:30",
+            "20:00",
+            "20:30",
+            "21:00",
+            "21:30"
+        )
 
         //Recibo los datos con el sharedPreferences
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
@@ -242,6 +275,7 @@ class TutoriasFragment : Fragment() {
 
                         // Aplica el adaptador al Spinner
                         spinner.adapter = adapter
+
                         val year = fechaStartSeleccionada3.get(Calendar.YEAR)
                         val month = fechaStartSeleccionada3.get(Calendar.MONTH)
                         val day = fechaStartSeleccionada3.get(Calendar.DAY_OF_MONTH)
@@ -268,7 +302,15 @@ class TutoriasFragment : Fragment() {
                             dialog.dismiss()
                         }
 
-                        spinner.setSelection(item.roomId!! - 1)
+                        if (item.roomId != null && roomsId.containsValue(item.roomId)) {
+                            val roomName = roomNames[item.roomId]
+                            if (roomName != null) {
+                                val index = rooms.indexOf(roomName)
+                                if (index != -1) {
+                                    spinner.setSelection(index)
+                                }
+                            }
+                        }
 
                         // Define el comportamiento cuando se selecciona un elemento
                         spinner.onItemSelectedListener =
@@ -531,7 +573,7 @@ class TutoriasFragment : Fragment() {
                             dialog.dismiss()
                         }
 
-                        spinner.setSelection(item.roomId!! - 1)
+                        //spinner.setSelection(item.roomId!! - 1)
 
                         // Define el comportamiento cuando se selecciona un elemento
                         spinner.onItemSelectedListener =
@@ -555,7 +597,7 @@ class TutoriasFragment : Fragment() {
 
                         val hour = fechaStartSeleccionada.get(Calendar.HOUR_OF_DAY)
                         val minute = fechaStartSeleccionada.get(Calendar.MINUTE)
-                        empieza.setText("Empieza: $hour:$minute")
+                        //empieza.setText("Empieza: $hour:$minute")
 
                         empieza.setOnClickListener {
 
@@ -579,7 +621,7 @@ class TutoriasFragment : Fragment() {
 
                         val hour2 = fechaEndSeleccionada.get(Calendar.HOUR_OF_DAY)
                         val minute2 = fechaEndSeleccionada.get(Calendar.MINUTE)
-                        acaba.setText("Acaba: $hour2:$minute2")
+                        //acaba.setText("Acaba: $hour2:$minute2")
 
                         acaba.setOnClickListener {
 
@@ -692,16 +734,22 @@ class TutoriasFragment : Fragment() {
 
             var elementoSeleccionado2 = ""
 
+            var elementoSeleccionado2Start = ""
+
+            var elementoSeleccionado2End = ""
+
             adapter.asignarTutoriaListener =
                 object : TutoriasPendientesAdapter.AsignarTutoriaListener {
                     override fun asignarTutoria(item: DataMentoringResponse) {
                         val builder = AlertDialog.Builder(requireContext())
-                        val view = layoutInflater.inflate(R.layout.alert2, null)
+                        val view = layoutInflater.inflate(R.layout.alert5, null)
                         builder.setView(view)
                         val dialog = builder.create()
                         dialog.show()
                         val formato =
                             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                        val formatoHours =
+                            SimpleDateFormat("HH:mm", Locale.getDefault())
                         val fecha = formato.parse(item.start!!)
                         val fecha2 = formato.parse(item.end!!)
                         fechaStartSeleccionada2.time = fecha!!
@@ -712,11 +760,13 @@ class TutoriasFragment : Fragment() {
                         asignar.setText("Asignar")
                         val alert = view.findViewById<TextView>(R.id.textView7)
                         alert.setText("Asignar tutoria")
-                        val empieza = view.findViewById<Button>(R.id.button6)
+                        /*val empieza = view.findViewById<Button>(R.id.button6)
                         empieza.setText("Hora comienzo")
                         val acaba = view.findViewById<Button>(R.id.button8)
-                        acaba.setText("Hora acaba")
+                        acaba.setText("Hora acaba")*/
                         val spinner = view.findViewById<Spinner>(R.id.spinner)
+                        val spinner2 = view.findViewById<Spinner>(R.id.spinner2)
+                        val spinner3 = view.findViewById<Spinner>(R.id.spinner3)
                         val cancelar = view.findViewById<Button>(R.id.button)
                         // Crea un ArrayAdapter usando el array de strings y el layout predeterminado del Spinner
                         val adapter =
@@ -725,17 +775,31 @@ class TutoriasFragment : Fragment() {
                                 android.R.layout.simple_spinner_item,
                                 rooms
                             )
+
+                        val adapter2 =
+                            ArrayAdapter(
+                                requireContext(),
+                                android.R.layout.simple_spinner_item,
+                                hours
+                            )
+
                         // Especifica el layout a usar cuando aparece la lista de opciones
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
                         // Aplica el adaptador al Spinner
                         spinner.adapter = adapter
+
+                        spinner2.adapter = adapter2
+
+                        spinner3.adapter = adapter2
 
                         cancelar.setOnClickListener {
                             dialog.dismiss()
                         }
 
-                        empieza.setOnClickListener {
+                        /*empieza.setOnClickListener {
                             val tpd = TimePickerDialog(
                                 requireContext(),
                                 { view, hourOfDay, minute ->
@@ -751,9 +815,9 @@ class TutoriasFragment : Fragment() {
                                 0, 0, true
                             )
                             tpd.show()
-                        }
+                        }*/
 
-                        acaba.setOnClickListener {
+                        /*acaba.setOnClickListener {
                             val tpd = TimePickerDialog(
                                 requireContext(),
                                 { view, hourOfDay, minute ->
@@ -769,7 +833,57 @@ class TutoriasFragment : Fragment() {
                                 0, 0, true
                             )
                             tpd.show()
+                        }*/
+
+                        /*val specificHoursStart = formatoHours.format(fecha)
+
+                        val specificHoursEnd = formatoHours.format(fecha2)
+
+                        val index = hours.indexOf(specificHoursStart)
+
+                        val index2 = hours.indexOf(specificHoursEnd)
+
+                        if (index != -1) {
+                            spinner2.setSelection(index)
                         }
+
+                        if (index2 != -1) {
+                            spinner3.setSelection(index2)
+                        }*/
+
+                        spinner2.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>?,
+                                    view: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    elementoSeleccionado2Start =
+                                        parent!!.getItemAtPosition(position) as String
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
+                                    // Aquí puedes manejar cuando no se selecciona ningún elemento
+                                }
+                            }
+
+                        spinner3.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>?,
+                                    view: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    elementoSeleccionado2End =
+                                        parent!!.getItemAtPosition(position) as String
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
+                                    // Aquí puedes manejar cuando no se selecciona ningún elemento
+                                }
+                            }
 
                         spinner.onItemSelectedListener =
                             object : AdapterView.OnItemSelectedListener {
@@ -858,8 +972,27 @@ class TutoriasFragment : Fragment() {
 
         viewModel.liveDataRoomList.observe(viewLifecycleOwner, Observer
         {
-            rooms = it.map { it.name }.toTypedArray()
-            roomsId = it.associate { room -> room.name to room.id }
+            val roomMentoring = it.filter { room -> room.mentoringRoom }
+            rooms = roomMentoring.map { it.name }.toTypedArray()
+            roomsId = roomMentoring.associate { room -> room.name to room.id }
+
+            var index = 0
+
+            for (room in roomMentoring) {
+
+                for (timeTable in room.timeTables) {
+
+                    val start = timeTable.start
+
+                    val end = timeTable.end
+
+                    occupededHours[index] = Pair(start, end)
+
+                    index++
+
+                }
+            }
+
         })
 
         viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer

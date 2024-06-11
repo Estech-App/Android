@@ -353,8 +353,9 @@ class TutoriasAlumnoFragment : Fragment() {
         })
 
         viewModel.liveDataRoomList.observe(viewLifecycleOwner, Observer {
-            rooms = it.map { it.name }.toTypedArray()
-            roomsId = it.associate { room -> room.name to room.id }
+            val roomMentoring = it.filter { room -> room.mentoringRoom }
+            rooms = roomMentoring.map { it.name }.toTypedArray()
+            roomsId = roomMentoring.associate { room -> room.name to room.id }
         })
 
         viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer {
