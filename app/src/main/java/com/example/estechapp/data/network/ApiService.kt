@@ -14,7 +14,9 @@ import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
+import com.example.estechapp.data.models.Grupos
 import com.example.estechapp.data.models.UserFull
+import com.example.estechapp.data.models.UserFullVerdat
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -131,6 +133,20 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body freeUsageModel: DataFreeUsageModel
     ): Response<DataFreeUsageResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("api/user/student/{id}")
+    suspend fun getUserStudent(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Response<UserFullVerdat>
+
+    @Headers("Content-Type: application/json")
+    @GET("api/group/by-user/{id}")
+    suspend fun getGroupByUser(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Response<List<Grupos>>
 
     /*@Headers("Content-Type: application/json")
     @GET("/api/time-table")

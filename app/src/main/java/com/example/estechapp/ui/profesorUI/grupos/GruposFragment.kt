@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estechapp.databinding.FragmentGruposBinding
 //import com.example.estechapp.ui.adapter.GrupoAdapter
 import com.example.estechapp.ui.adapter.HorarioAdapter
 import com.example.estechapp.data.models.Horario
+import com.example.estechapp.ui.MyViewModel
+import com.example.estechapp.ui.adapter.GrupoAdapter
 import java.util.Calendar
 
 class GruposFragment : Fragment() {
@@ -18,6 +23,12 @@ class GruposFragment : Fragment() {
     private var _binding: FragmentGruposBinding? = null
 
     private val binding get() = _binding!!
+
+    private lateinit var adapter: GrupoAdapter
+
+    private val viewModel by viewModels<MyViewModel> {
+        MyViewModel.MyViewModelFactory(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,20 +43,6 @@ class GruposFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*binding.recyclerManana.adapter = MananaHorarioAdapter()
-        binding.recyclerTarde.adapter = TardeHorarioAdapter()
-        binding.recyclerGrupos.adapter = GrupoAdapter()*/
-        binding.recyclerHorario.adapter = HorarioAdapter(
-            listOf(
-                Horario("8:20 a 10:20", "Lenguaje de Marcas", "DAM 1º")
-            )
-        )
-        /*binding.recyclerGrupos.adapter = GrupoAdapter(
-            listOf(
-                Grupo("Dam 1º", 18)
-            )
-        )*/
 
         //Esto es para que se actualice la fecha y hora cada segundo
         val handler = Handler(Looper.getMainLooper())
@@ -160,39 +157,25 @@ class GruposFragment : Fragment() {
 
         handler.post(runnable)
 
-        /*val builder = AlertDialog.Builder(requireContext())
-        val view = layoutInflater.inflate(R.layout.alert, null)
-        builder.setView(view)
-        val dialog = builder.create()
-        dialog.show()
-        val cancelar = view.findViewById<Button>(R.id.button)
-        val enviar = view.findViewById<Button>(R.id.button4)
-        val titulo = view.findViewById<TextView>(R.id.textView7)
-        val mensaje = view.findViewById<TextView>(R.id.textView15)
-        titulo.setText("Alert")
-        mensaje.setText("¿Desea mandar un mail al alumno Iñigo Acosta Conde?")
-        enviar.setText("Enviar")
-        cancelar.setOnClickListener {
-            dialog.dismiss()
-        }
-        enviar.setOnClickListener {
+        /*val recyclerView = binding.recyclerGrupos
+        val llm = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = llm
 
-            val builder2 = AlertDialog.Builder(requireContext())
-            val view2 = layoutInflater.inflate(R.layout.alert_response, null)
-            val mensaje = view2.findViewById<TextView>(R.id.textView16)
-            mensaje.setText("Mensaje enviado con exito!")
-            builder2.setView(view2)
-            val dialog2 = builder2.create()
-            dialog2.show()
-            dialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (dialog2.isShowing) {
-                    dialog2.dismiss()
+        viewModel.liveDataGroupUser.observe(viewLifecycleOwner, Observer {
+
+            var contador = 0
+
+            for (grupos in it) {
+                if (grupos == "STUDENT") {
+                    contador++
+                    users.posicion = contador
                 }
-            }, 5000)
-            dialog.dismiss()
+            }
 
-        }*/
+            adapter = GrupoAdapter()
+            recyclerView.adapter = adapter
+        })*/
+
     }
 
     override fun onDestroyView() {

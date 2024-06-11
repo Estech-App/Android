@@ -48,6 +48,10 @@ class Repository(val context: Context) {
 
     suspend fun postFreeUsage(token: String, freeUsageModel: DataFreeUsageModel) = retrofit.freeUsagePost(token, freeUsageModel)
 
+    suspend fun getUserStudent(token: String, id: Int) = retrofit.getUserStudent(token, id)
+
+    suspend fun getGroupUser(token: String, id: Int) = retrofit.getGroupByUser(token, id)
+
     /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
 
 }

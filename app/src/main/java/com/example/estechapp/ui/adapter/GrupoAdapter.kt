@@ -3,16 +3,18 @@ package com.example.estechapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.estechapp.data.models.Grupos
+import com.example.estechapp.data.models.UserConRol
 import com.example.estechapp.databinding.ItemGruposCuadradoBinding
 
-/*class GrupoAdapter(private val grupos: List<Grupo>) : RecyclerView.Adapter<GrupoAdapter.ViewHolder>() {
+class GrupoAdapter(private val grupos: List<Grupos>) : RecyclerView.Adapter<GrupoAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemGruposCuadradoBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(grupo: Grupo){
+        fun bind(grupo: Grupos){
             with(binding){
-                nombreGrupo.text = grupo.nombre
-                cantidadAlumnos.text = grupo.alumnos.toString()
+                nombreGrupo.text = grupo.name
+                cantidadAlumnos.text = grupo.cantidad.toString()
             }
         }
     }
@@ -28,7 +30,7 @@ import com.example.estechapp.databinding.ItemGruposCuadradoBinding
     override fun getItemCount() = grupos.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(grupos[position])
     }
 
-}*/
+}

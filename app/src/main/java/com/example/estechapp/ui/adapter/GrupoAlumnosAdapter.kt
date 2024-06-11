@@ -3,14 +3,25 @@ package com.example.estechapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.estechapp.data.models.UserConRol
+import com.example.estechapp.data.models.UserNombres
 import com.example.estechapp.databinding.ItemListaAlumnoBinding
 
-/*class GrupoAlumnosAdapter(private val alumno: List<Alumno>) : RecyclerView.Adapter<GrupoAlumnosAdapter.ViewHolder>(){
+class GrupoAlumnosAdapter(private var alumno: List<UserConRol>) : RecyclerView.Adapter<GrupoAlumnosAdapter.ViewHolder>(){
+
+    interface EnviarCorreoListener {
+        fun enviarCorreo(item: UserConRol)
+    }
+
+    var enviarCorreoListener: EnviarCorreoListener? = null
 
     class ViewHolder(val binding: ItemListaAlumnoBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(alumno: Alumno){
-            binding.nombreAlumno.text = alumno.nombre
+        fun bind(alumno: UserConRol){
+            with(binding) {
+                nombrealumno.setText(alumno.name + " " + alumno.lastname)
+                orden.setText(alumno.posicion.toString())
+            }
         }
     }
 
@@ -25,7 +36,16 @@ import com.example.estechapp.databinding.ItemListaAlumnoBinding
     override fun getItemCount() = alumno.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(alumno[position])
 
-        holder.binding.orden.text = position.toString()
+        holder.binding.root.setOnClickListener {
+            enviarCorreoListener?.enviarCorreo(alumno[position])
+        }
     }
-}*/
+
+    fun updateData(newData: List<UserConRol>) {
+        this.alumno = newData
+        notifyDataSetChanged()
+    }
+
+}

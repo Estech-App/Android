@@ -21,9 +21,11 @@ import com.example.estechapp.data.models.DataMentoringResponse
 import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
+import com.example.estechapp.data.models.Grupos
 import com.example.estechapp.data.models.RoomId
 import com.example.estechapp.data.models.User
 import com.example.estechapp.data.models.UserFull
+import com.example.estechapp.data.models.UserFullVerdat
 import com.example.estechapp.data.models.UserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,6 +54,8 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataFreeUsage = SingleLiveEvent<DataFreeUsageResponse>()
     val liveDataFreeUsageList = MutableLiveData<List<DataFreeUsageResponse>>()
     val liveDataRoomAndFreeUsage = MediatorLiveData<Pair<List<DataRoomResponse>,List<DataFreeUsageResponse>>>()
+    val liveDataUserGroups = MutableLiveData<UserFullVerdat>()
+    val liveDataGroupUser = MutableLiveData<List<Grupos>>()
 
     init {
         liveDataRoomAndMentoring.addSource(liveDataRoomList) { rooms ->
@@ -316,6 +320,34 @@ class MyViewModel(val context: Context) : ViewModel() {
             }
         }
     }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getUserStudent(
+        token: String,
+        id: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getUserStudent(token, id)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataUserGroups.postValue(myResponse)
+            }
+        }
+    }
+
+    /*@SuppressLint("NullSafeMutableLiveData")
+    fun getGroupUser(
+        token: String,
+        id: Int
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getGroupUser(token, id)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataGroupUser.postValue(myResponse)
+            }
+        }
+    }*/
 
     /*fun getTimeTable(token: String) {
         CoroutineScope(Dispatchers.IO).launch {
