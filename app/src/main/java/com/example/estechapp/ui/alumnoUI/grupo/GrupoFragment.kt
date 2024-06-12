@@ -69,6 +69,10 @@ class GrupoFragment : Fragment() {
             }
         }
 
+        // Inicializa los adaptadores aquí
+        adapter = GrupoAlumnosAdapter(alumnos)
+        adapter2 = GrupoAlumnosAdapter2(profesores)
+
         return root
     }
 
