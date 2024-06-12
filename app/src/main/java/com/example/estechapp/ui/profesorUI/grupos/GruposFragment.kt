@@ -1,5 +1,6 @@
 package com.example.estechapp.ui.profesorUI.grupos
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,7 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.estechapp.R
+import com.example.estechapp.data.models.Grupos
 import com.example.estechapp.databinding.FragmentGruposBinding
 //import com.example.estechapp.ui.adapter.GrupoAdapter
 import com.example.estechapp.ui.adapter.HorarioAdapter
@@ -157,25 +161,43 @@ class GruposFragment : Fragment() {
 
         handler.post(runnable)
 
-        /*val recyclerView = binding.recyclerGrupos
+        //Recibo los datos.
+        val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
+        val token = pref.getString("token", "")
+        val id = pref.getInt("id", 0)
+
+        val recyclerView = binding.recyclerGrupos
         val llm = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = llm
 
+        viewModel.getGroupUser("Bearer $token", id)
+
         viewModel.liveDataGroupUser.observe(viewLifecycleOwner, Observer {
 
-            var contador = 0
-
             for (grupos in it) {
-                if (grupos == "STUDENT") {
+                var contador = 0
+                for (users in grupos.users) {
                     contador++
-                    users.posicion = contador
                 }
+                grupos.cantidad = contador
             }
 
-            adapter = GrupoAdapter()
+            adapter = GrupoAdapter(it)
             recyclerView.adapter = adapter
-        })*/
 
+            adapter.navegarGrupoListener =
+                object : GrupoAdapter.NavegarGrupoListener {
+                    override fun navegarGrupo(item: Grupos) {
+                        val bundle = Bundle().apply {
+                            putInt("grupoId", item.id)
+                        }
+                        findNavController().navigate(
+                            R.id.action_navigation_grupos_to_grupoCheckFragment,
+                            bundle
+                        )
+                    }
+                }
+        })
     }
 
     override fun onDestroyView() {

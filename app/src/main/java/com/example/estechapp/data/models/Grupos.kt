@@ -10,5 +10,5 @@ data class Grupos(
     val roomId: Int,
     val users: List<UserConRol>,
     val timeTable: List<DataRoomTimeTable>,
-    val cantidad: Int
+    var cantidad: Int
 )
