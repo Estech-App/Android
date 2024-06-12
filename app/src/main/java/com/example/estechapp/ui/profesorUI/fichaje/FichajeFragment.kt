@@ -24,11 +24,17 @@ import java.util.Locale
 import java.util.TimeZone
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.estechapp.data.models.DataTimeTableResponse
+import com.example.estechapp.ui.adapter.HorarioAdapter
 import com.example.estechapp.ui.adapter.TutoriasHotAdapter
 
 class FichajeFragment : Fragment() {
 
     private var _binding: FragmentFichajeBinding? = null
+
+    private lateinit var adapter2: HorarioAdapter
+
+    private lateinit var adapter3: HorarioAdapter
 
     private val viewModel by viewModels<MyViewModel> {
         MyViewModel.MyViewModelFactory(requireContext())
@@ -60,7 +66,23 @@ class FichajeFragment : Fragment() {
         val llm = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = llm
 
+        //Voy preparando el recyclerview
+        val recyclerView2 = binding.recyclerViewhorario1
+        val llm2 = LinearLayoutManager(requireContext())
+        recyclerView2.layoutManager = llm2
+
+        //Voy preparando el recyclerview
+        val recyclerView3 = binding.recyclerViewHorario2
+        val llm3 = LinearLayoutManager(requireContext())
+        recyclerView3.layoutManager = llm3
+
         viewModel.getMentoringTeacher("Bearer $token", id)
+
+        viewModel.getModuleList("Bearer $token")
+
+        viewModel.getGroupUser("Bearer $token", id)
+
+        viewModel.getTimeTableALlList("Bearer $token")
 
         binding.textView4.text = user
 
@@ -436,6 +458,44 @@ class FichajeFragment : Fragment() {
                 recyclerView.adapter = adapter
 
             }
+        })
+
+        viewModel.liveDataGroupUserModuleTimeTable.observe(viewLifecycleOwner, Observer {
+            val GroupList = it.first
+            val ModuleList = it.second
+            val TimeTableList = it.third
+
+            var horarioManana: MutableList<DataTimeTableResponse> = mutableListOf()
+            var horarioTarde: MutableList<DataTimeTableResponse> = mutableListOf()
+
+            var hoy = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+            hoy -= 1
+            hoy.toString()
+
+            for (timeTable in TimeTableList) {
+                for (grupo in GroupList) {
+                    for (modulo in ModuleList) {
+                        if (timeTable.schoolGroupId == grupo.id && timeTable.moduleId == modulo.id && modulo.usersName.contains(user) && timeTable.weekday == hoy.toString()) {
+                            timeTable.groupName = grupo.name
+                            timeTable.moduleName = modulo.name
+                            if (grupo.evening == false) {
+                                horarioManana.add(timeTable)
+                            } else {
+                                horarioTarde.add(timeTable)
+                            }
+                        }
+                    }
+                }
+            }
+            // Ordenar las listas por fecha
+            horarioManana.sortWith(compareBy { it.start }) // Reemplaza 'fecha' con el nombre de tu campo de fecha
+            horarioTarde.sortWith(compareBy { it.start }) // Reemplaza 'fecha' con el nombre de tu campo de fecha
+
+            adapter2 = HorarioAdapter(horarioManana)
+            recyclerView2.adapter = adapter2
+
+            adapter3 = HorarioAdapter(horarioTarde)
+            recyclerView3.adapter = adapter3
         })
 
         //Esto es para pasarle el roomId y sacar el nombre del aula.

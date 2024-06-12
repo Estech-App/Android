@@ -52,6 +52,10 @@ class Repository(val context: Context) {
 
     suspend fun getGroupUser(token: String, id: Int) = retrofit.getGroupByUser(token, id)
 
-    /*suspend fun getTimeTable(token: String) = retrofit.timeTable(token)*/
+    suspend fun getTimeTableByGroup(token: String, id: Int) = retrofit.timeTableByGroup(token, id)
+
+    suspend fun getTimeTable(token: String) = retrofit.getTimeTable(token)
+
+    suspend fun getModule(token: String) = retrofit.getModules(token)
 
 }

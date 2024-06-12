@@ -11,8 +11,10 @@ import com.example.estechapp.data.models.DataLoginResponse
 import com.example.estechapp.data.models.DataMentoringModel
 import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.models.DataMentoringResponse
+import com.example.estechapp.data.models.DataModuleResponse
 import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
+import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.Grupos
 import com.example.estechapp.data.models.UserFull
@@ -148,9 +150,22 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<List<Grupos>>
 
-    /*@Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json")
+    @GET("/api/time-table/by-group-id/{id}")
+    suspend fun timeTableByGroup(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Response<List<DataTimeTableResponse>>
+
+    @Headers("Content-Type: application/json")
     @GET("/api/time-table")
-    suspend fun timeTable(
+    suspend fun getTimeTable(
         @Header("Authorization") token: String
-    ) : Response<DataTimeTableResponse>*/
+    ): Response<List<DataTimeTableResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("/api/module")
+    suspend fun getModules(
+        @Header("Authorization") token: String
+    ): Response<List<DataModuleResponse>>
 }

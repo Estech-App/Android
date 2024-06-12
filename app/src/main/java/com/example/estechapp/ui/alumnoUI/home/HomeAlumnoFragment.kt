@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.databinding.FragmentHomeAlumnoBinding
 import com.example.estechapp.ui.MyViewModel
+import com.example.estechapp.ui.adapter.HorarioAdapter
 import com.example.estechapp.ui.adapter.TutoriasHotAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -22,6 +24,10 @@ import java.util.TimeZone
 class HomeAlumnoFragment : Fragment() {
 
     private var _binding: FragmentHomeAlumnoBinding? = null
+
+    private lateinit var adapter2: HorarioAdapter
+
+    private lateinit var adapter3: HorarioAdapter
 
     private val viewModel by viewModels<MyViewModel> {
         MyViewModel.MyViewModelFactory(requireContext())
@@ -53,7 +59,21 @@ class HomeAlumnoFragment : Fragment() {
         val llm = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = llm
 
+        val recyclerView2 = binding.recyclerViewhorario1
+        val llm2 = LinearLayoutManager(requireContext())
+        recyclerView2.layoutManager = llm2
+
+        val recyclerView3 = binding.recyclerViewhorario2
+        val llm3 = LinearLayoutManager(requireContext())
+        recyclerView3.layoutManager = llm3
+
         viewModel.getMentoringStudent("Bearer $token", id)
+
+        viewModel.getModuleList("Bearer $token")
+
+        viewModel.getGroupUser("Bearer $token", id)
+
+        viewModel.getTimeTableALlList("Bearer $token")
 
         binding.textView4.text = user
 
@@ -184,7 +204,8 @@ class HomeAlumnoFragment : Fragment() {
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
 
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+                val dateFormat =
+                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
                 // La zona horaria se establece a la del sistema por defecto
                 dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
@@ -236,7 +257,46 @@ class HomeAlumnoFragment : Fragment() {
                 editor.commit()
             }
         })
+
+        viewModel.liveDataGroupUserModuleTimeTable.observe(viewLifecycleOwner, Observer {
+            val GroupList = it.first
+            val ModuleList = it.second
+            val TimeTableList = it.third
+
+            var horarioManana: MutableList<DataTimeTableResponse> = mutableListOf()
+            var horarioTarde: MutableList<DataTimeTableResponse> = mutableListOf()
+
+            var hoy = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+            hoy -= 1
+            hoy.toString()
+
+            for (timeTable in TimeTableList) {
+                for (grupo in GroupList) {
+                    for (modulo in ModuleList) {
+                        if (timeTable.schoolGroupId == grupo.id && timeTable.moduleId == modulo.id && modulo.usersName.contains(user) && timeTable.weekday == hoy.toString()) {
+                            timeTable.groupName = grupo.name
+                            timeTable.moduleName = modulo.name
+                            if (grupo.evening == false) {
+                                horarioManana.add(timeTable)
+                            } else {
+                                horarioTarde.add(timeTable)
+                            }
+                        }
+                    }
+                }
+            }
+            // Ordenar las listas por fecha
+            horarioManana.sortWith(compareBy { it.start }) // Reemplaza 'fecha' con el nombre de tu campo de fecha
+            horarioTarde.sortWith(compareBy { it.start }) // Reemplaza 'fecha' con el nombre de tu campo de fecha
+
+            adapter2 = HorarioAdapter(horarioManana)
+            recyclerView2.adapter = adapter2
+
+            adapter3 = HorarioAdapter(horarioTarde)
+            recyclerView3.adapter = adapter3
+        })
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -18,8 +18,10 @@ import com.example.estechapp.data.models.DataLoginResponse
 import com.example.estechapp.data.models.DataMentoringModel
 import com.example.estechapp.data.models.DataMentoringModelPatch
 import com.example.estechapp.data.models.DataMentoringResponse
+import com.example.estechapp.data.models.DataModuleResponse
 import com.example.estechapp.data.models.DataRoleResponse
 import com.example.estechapp.data.models.DataRoomResponse
+import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.data.models.DataUserInfoResponse
 import com.example.estechapp.data.models.Grupos
 import com.example.estechapp.data.models.RoomId
@@ -49,13 +51,15 @@ class MyViewModel(val context: Context) : ViewModel() {
     val liveDataRoom = MutableLiveData<DataRoomResponse>()
     val liveDataRoleList = MutableLiveData<List<DataRoleResponse>>()
     val liveDataUserRoleList = MutableLiveData<List<UserFull>>()
-    //val liveDataTimeTable = MutableLiveData<DataTimeTableResponse?>()
+    val liveDataTimeTableList = MutableLiveData<List<DataTimeTableResponse>>()
     val liveDataRoomAndMentoring = MediatorLiveData<Pair<List<DataRoomResponse>,List<DataMentoringResponse>>>()
     val liveDataFreeUsage = SingleLiveEvent<DataFreeUsageResponse>()
     val liveDataFreeUsageList = MutableLiveData<List<DataFreeUsageResponse>>()
     val liveDataRoomAndFreeUsage = MediatorLiveData<Pair<List<DataRoomResponse>,List<DataFreeUsageResponse>>>()
     val liveDataUserGroups = MutableLiveData<UserFullVerdat>()
     val liveDataGroupUser = MutableLiveData<List<Grupos>>()
+    val liveDataModuleList = MutableLiveData<List<DataModuleResponse>>()
+    val liveDataGroupUserModuleTimeTable = MediatorLiveData<Triple<List<Grupos>,List<DataModuleResponse>,List<DataTimeTableResponse>>>()
 
     init {
         liveDataRoomAndMentoring.addSource(liveDataRoomList) { rooms ->
@@ -72,6 +76,18 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
         liveDataRoomAndFreeUsage.addSource(liveDataFreeUsageList) { freeUsage ->
             liveDataRoomAndFreeUsage.value = Pair(liveDataRoomList.value ?: emptyList(), freeUsage)
+        }
+    }
+
+    init {
+        liveDataGroupUserModuleTimeTable.addSource(liveDataGroupUser) { group ->
+            liveDataGroupUserModuleTimeTable.value = Triple(group, liveDataModuleList.value ?: emptyList(), liveDataTimeTableList.value ?: emptyList())
+        }
+        liveDataGroupUserModuleTimeTable.addSource(liveDataModuleList) { module ->
+            liveDataGroupUserModuleTimeTable.value = Triple(liveDataGroupUser.value ?: emptyList(), module, liveDataTimeTableList.value ?: emptyList())
+        }
+        liveDataGroupUserModuleTimeTable.addSource(liveDataTimeTableList) { timeTable ->
+            liveDataGroupUserModuleTimeTable.value = Triple(liveDataGroupUser.value ?: emptyList(), liveDataModuleList.value ?: emptyList(), timeTable)
         }
     }
 
@@ -349,15 +365,38 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
-    /*fun getTimeTable(token: String) {
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getTimeTableList(token: String, id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getTimeTableByGroup(token, id)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataTimeTableList.postValue(myResponse)
+            }
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun getTimeTableALlList(token: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getTimeTable(token)
             if (response.isSuccessful) {
                 val myResponse = response.body()
-                liveDataTimeTable.postValue(myResponse)
+                liveDataTimeTableList.postValue(myResponse)
             }
         }
-    }*/
+    }
+
+    @SuppressLint("nullSafeMutableLiveData")
+    fun getModuleList(token: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getModule(token)
+            if (response.isSuccessful) {
+                val myResponse = response.body()
+                liveDataModuleList.postValue(myResponse)
+            }
+        }
+    }
 
     class MyViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

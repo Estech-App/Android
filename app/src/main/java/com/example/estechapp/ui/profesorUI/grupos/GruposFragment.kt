@@ -30,6 +30,10 @@ class GruposFragment : Fragment() {
 
     private lateinit var adapter: GrupoAdapter
 
+    private lateinit var adapter2: HorarioAdapter
+
+    private lateinit var adapter3: HorarioAdapter
+
     private val viewModel by viewModels<MyViewModel> {
         MyViewModel.MyViewModelFactory(requireContext())
     }
@@ -163,12 +167,23 @@ class GruposFragment : Fragment() {
 
         //Recibo los datos.
         val pref = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
+        val user = pref.getString("username", "")
         val token = pref.getString("token", "")
         val id = pref.getInt("id", 0)
 
         val recyclerView = binding.recyclerGrupos
         val llm = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = llm
+
+        //Voy preparando el recyclerview
+        val recyclerView2 = binding.re
+        val llm2 = LinearLayoutManager(requireContext())
+        recyclerView2.layoutManager = llm2
+
+        //Voy preparando el recyclerview
+        val recyclerView3 = binding.recyclerViewHorario2
+        val llm3 = LinearLayoutManager(requireContext())
+        recyclerView3.layoutManager = llm3
 
         viewModel.getGroupUser("Bearer $token", id)
 

@@ -28,6 +28,7 @@ import com.example.estechapp.databinding.FragmentTutoriasBinding
 import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
 import com.example.estechapp.ui.adapter.TutoriasPendientesAdapter
 import com.example.estechapp.ui.MyViewModel
+import com.example.estechapp.ui.adapter.HorarioAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

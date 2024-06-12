@@ -3,18 +3,27 @@ package com.example.estechapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.databinding.ItemHorarioBinding
 import com.example.estechapp.data.models.Horario
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class HorarioAdapter(private val horario: List<Horario>) : RecyclerView.Adapter<HorarioAdapter.ViewHolder>() {
+class HorarioAdapter(private val horario: List<DataTimeTableResponse>) : RecyclerView.Adapter<HorarioAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemHorarioBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(horario: Horario){
+        fun bind(horario: DataTimeTableResponse){
             with(binding){
-                horaHorario.text = horario.hora
-                nombreAsignatura.text = horario.asignatura
-                cursoHorario.text = horario.grupo
+                val formato = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val formatoHora = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val startDate = formato.parse(horario.start)
+                val startHora = formatoHora.format(startDate)
+                val endDate = formato.parse(horario.end)
+                val endHora = formatoHora.format(endDate)
+                horaHorario.text = startHora + " a " + endHora
+                nombreAsignatura.text = horario.moduleName
+                cursoHorario.text = horario.groupName
             }
         }
     }
@@ -30,6 +39,7 @@ class HorarioAdapter(private val horario: List<Horario>) : RecyclerView.Adapter<
     override fun getItemCount() = horario.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(horario[position])
         val clase = horario[position]
         /*if (clase){
             if (position % 2 == 0){
