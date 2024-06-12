@@ -335,7 +335,7 @@ class MyViewModel(val context: Context) : ViewModel() {
         }
     }
 
-    /*@SuppressLint("NullSafeMutableLiveData")
+    @SuppressLint("NullSafeMutableLiveData")
     fun getGroupUser(
         token: String,
         id: Int
@@ -347,7 +347,7 @@ class MyViewModel(val context: Context) : ViewModel() {
                 liveDataGroupUser.postValue(myResponse)
             }
         }
-    }*/
+    }
 
     /*fun getTimeTable(token: String) {
         CoroutineScope(Dispatchers.IO).launch {

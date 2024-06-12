@@ -20,7 +20,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_home_alunno">
+                  <entry key="navigation_home_alumno">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -124,6 +124,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="grupoCheckFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="253" />
+                            <option name="y" value="368" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="navigation_fichaje">
                     <value>
                       <LayoutPositions>
@@ -165,6 +177,15 @@
                             <option name="x" value="12" />
                             <option name="y" value="368" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigation_practica_to_grupoCheckFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
