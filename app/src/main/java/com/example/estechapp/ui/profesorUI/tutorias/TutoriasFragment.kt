@@ -47,6 +47,8 @@ class TutoriasFragment : Fragment() {
 
     private lateinit var occupededHours: Array<Pair<String, String>>
 
+    private var occupiedTimes = mutableListOf<String>()
+
     private lateinit var roomsId: Map<String, Int>
 
     private lateinit var roomNames: Map<Int, String?>
@@ -72,9 +74,9 @@ class TutoriasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         hours = arrayOf(
-            "8:30",
-            "9:00",
-            "9:30",
+            "08:30",
+            "09:00",
+            "09:30",
             "10:00",
             "10:30",
             "11:00",
@@ -777,24 +779,61 @@ class TutoriasFragment : Fragment() {
                                 rooms
                             )
 
-                        /*val adapter2 =
-                            ArrayAdapter(
-                                requireContext(),
-                                android.R.layout.simple_spinner_item,
-                                hours
-                            )*/
-
                         // Especifica el layout a usar cuando aparece la lista de opciones
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-                        //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
                         // Aplica el adaptador al Spinner
                         spinner.adapter = adapter
 
-                        /*spinner2.adapter = adapter2
+                        /*val adapter2 =
+                            object : ArrayAdapter<String>(
+                                requireContext(),
+                                android.R.layout.simple_spinner_item,
+                                hours
+                            ) {
+                                override fun getDropDownView(
+                                    position: Int,
+                                    convertView: View?,
+                                    parent: ViewGroup
+                                ): View {
+                                    val view = super.getDropDownView(position, convertView, parent)
+                                    val textView = view as TextView
 
-                        spinner3.adapter = adapter2*/
+                                    // Si la hora está en occupiedTimes, cambia el color del texto a rojo
+                                    if (occupiedTimes.contains(hours[position])) {
+                                        textView.setTextColor(Color.RED)
+                                    } else {
+                                        textView.setTextColor(Color.BLACK)
+                                    }
+
+                                    return view
+                                }
+
+                                override fun getView(
+                                    position: Int,
+                                    convertView: View?,
+                                    parent: ViewGroup
+                                ): View {
+                                    val view = super.getView(position, convertView, parent)
+                                    val textView = view as TextView
+
+                                    // Si la hora está en occupiedTimes, cambia el color del texto a rojo
+                                    if (occupiedTimes.contains(hours[position])) {
+                                        textView.setTextColor(Color.RED)
+                                    } else {
+                                        textView.setTextColor(Color.BLACK)
+                                    }
+
+                                    return view
+                                }
+
+                            }
+
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                        spinner2.adapter = adapter2*/
+
+                        //spinner3.adapter = adapter2
 
                         cancelar.setOnClickListener {
                             dialog.dismiss()
@@ -897,6 +936,51 @@ class TutoriasFragment : Fragment() {
                                     elementoSeleccionado2 =
                                         parent!!.getItemAtPosition(position) as String
                                     // Aquí puedes manejar el elemento seleccionado
+
+                                    /*val roomId = roomsId[elementoSeleccionado2]
+                                    viewModel.getRoomId("Bearer $token", roomId!!)
+
+                                    viewModel.liveDataRoom.observe(viewLifecycleOwner, Observer {
+                                        val formato = SimpleDateFormat(
+                                            "yyyy-MM-dd'T'HH:mm:ss",
+                                            Locale.getDefault()
+                                        )
+
+                                        val formatoHora =
+                                            SimpleDateFormat("HH:mm", Locale.getDefault())
+
+                                        // Inicializa occupiedHours como una lista mutable vacía
+                                        val occupiedHoursList =
+                                            mutableListOf<Pair<String, String>>()
+
+                                        for (timeTable in it.timeTables) {
+
+                                            val startfecha = formato.parse(timeTable.start)
+
+                                            val endfecha = formato.parse(timeTable.end)
+
+                                            val start = formatoHora.format(startfecha)
+
+                                            val end = formatoHora.format(endfecha)
+
+                                            // Añade el nuevo par a occupiedHoursList
+                                            occupiedHoursList.add(Pair(start, end))
+                                        }
+
+                                        // Convierte occupiedHoursList a un array y lo asigna a occupiedHours
+                                        occupededHours = occupiedHoursList.toTypedArray()
+
+                                        occupiedTimes = mutableListOf<String>()
+
+                                        for ((startHour, endHour) in occupededHours) {
+                                            val startIndex = hours.indexOf(startHour) + 1
+                                            val endIndex = hours.indexOf(endHour)
+                                            if (startIndex >= 0 && endIndex >= 0) {
+                                                occupiedTimes.addAll(hours.slice(startIndex until endIndex))
+                                            }
+                                        }
+
+                                    })*/
                                 }
 
                                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -976,24 +1060,6 @@ class TutoriasFragment : Fragment() {
             val roomMentoring = it.filter { room -> room.mentoringRoom }
             rooms = roomMentoring.map { it.name }.toTypedArray()
             roomsId = roomMentoring.associate { room -> room.name to room.id }
-
-            var index = 0
-
-            for (room in roomMentoring) {
-
-                for (timeTable in room.timeTables) {
-
-                    val start = timeTable.start
-
-                    val end = timeTable.end
-
-                    occupededHours[index] = Pair(start, end)
-
-                    index++
-
-                }
-            }
-
         })
 
         viewModel.liveDataMentoring.observe(viewLifecycleOwner, Observer

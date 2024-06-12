@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estechapp.R
+import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.data.models.Grupos
 import com.example.estechapp.databinding.FragmentGruposBinding
 //import com.example.estechapp.ui.adapter.GrupoAdapter
@@ -155,7 +156,7 @@ class GruposFragment : Fragment() {
 
                     binding.fecha.text = "$diaSemanaN, $diaMes, $mesN"
 
-                    binding.textView8.text = "Horario de hoy"
+                    binding.textView11.text = "Horario de hoy"
 
                     handler.postDelayed(this, 1000)
 
@@ -176,7 +177,7 @@ class GruposFragment : Fragment() {
         recyclerView.layoutManager = llm
 
         //Voy preparando el recyclerview
-        val recyclerView2 = binding.re
+        val recyclerView2 = binding.recyclerViewhorario1
         val llm2 = LinearLayoutManager(requireContext())
         recyclerView2.layoutManager = llm2
 
@@ -186,6 +187,12 @@ class GruposFragment : Fragment() {
         recyclerView3.layoutManager = llm3
 
         viewModel.getGroupUser("Bearer $token", id)
+
+        viewModel.getModuleList("Bearer $token")
+
+        viewModel.getGroupUser("Bearer $token", id)
+
+        viewModel.getTimeTableALlList("Bearer $token")
 
         viewModel.liveDataGroupUser.observe(viewLifecycleOwner, Observer {
 
@@ -212,6 +219,44 @@ class GruposFragment : Fragment() {
                         )
                     }
                 }
+        })
+
+        viewModel.liveDataGroupUserModuleTimeTable.observe(viewLifecycleOwner, Observer {
+            val GroupList = it.first
+            val ModuleList = it.second
+            val TimeTableList = it.third
+
+            var horarioManana: MutableList<DataTimeTableResponse> = mutableListOf()
+            var horarioTarde: MutableList<DataTimeTableResponse> = mutableListOf()
+
+            var hoy = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+            hoy -= 1
+            hoy.toString()
+
+            for (timeTable in TimeTableList) {
+                for (grupo in GroupList) {
+                    for (modulo in ModuleList) {
+                        if (timeTable.schoolGroupId == grupo.id && timeTable.moduleId == modulo.id && modulo.usersName.contains(user) && timeTable.weekday == hoy.toString()) {
+                            timeTable.groupName = grupo.name
+                            timeTable.moduleName = modulo.name
+                            if (grupo.evening == false) {
+                                horarioManana.add(timeTable)
+                            } else {
+                                horarioTarde.add(timeTable)
+                            }
+                        }
+                    }
+                }
+            }
+            // Ordenar las listas por fecha
+            horarioManana.sortWith(compareBy { it.start }) // Reemplaza 'fecha' con el nombre de tu campo de fecha
+            horarioTarde.sortWith(compareBy { it.start }) // Reemplaza 'fecha' con el nombre de tu campo de fecha
+
+            adapter2 = HorarioAdapter(horarioManana)
+            recyclerView2.adapter = adapter2
+
+            adapter3 = HorarioAdapter(horarioTarde)
+            recyclerView3.adapter = adapter3
         })
     }
 
