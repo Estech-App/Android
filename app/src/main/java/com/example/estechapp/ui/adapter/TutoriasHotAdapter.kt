@@ -24,7 +24,9 @@ class TutoriasHotAdapter(private val tutorias: List<DataMentoringResponse>) :
             } else {
                 binding.nombre.text = tutoria.teacher!!.name + " " + tutoria.teacher!!.lastname
             }
-            binding.curso.text = "Animaciones 2º"
+            //No puedo llegar a curso porque esta en la otra punta de la base de datos y tampoco tengo permisos.
+            binding.curso.text = ""
+            binding.textView10.text = ""
             //Aqui uso el roomName en vez de roomId
             binding.aula.text = tutoria.roomName
 

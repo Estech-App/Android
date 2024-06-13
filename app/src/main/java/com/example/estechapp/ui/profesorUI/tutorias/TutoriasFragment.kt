@@ -29,6 +29,7 @@ import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapter
 import com.example.estechapp.ui.adapter.TutoriasPendientesAdapter
 import com.example.estechapp.ui.MyViewModel
 import com.example.estechapp.ui.adapter.HorarioAdapter
+import com.example.estechapp.ui.adapter.TutoriasHotAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -188,9 +189,13 @@ class TutoriasFragment : Fragment() {
                     .equals(ahora.time) || formato.parse(it.start).after(ahora.time))
             }
 
-            adapter = TutoriasPendientesAdapter(pendientes)
+            // Ordena las listas por la fecha de inicio
+            val pendientesOrdenadas = pendientes.sortedBy { formato.parse(it.start) }
+            val otrasOrdenadas = otras.sortedBy { formato.parse(it.start) }
+
+            adapter = TutoriasPendientesAdapter(pendientesOrdenadas)
             recyclerView2.adapter = adapter
-            adapter2 = TutoriasAsignadasAdapter(otras)
+            adapter2 = TutoriasAsignadasAdapter(otrasOrdenadas)
             recyclerView.adapter = adapter2
             adapter.notifyDataSetChanged()
             adapter2.notifyDataSetChanged()

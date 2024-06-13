@@ -7,7 +7,7 @@ data class Grupos(
     val evening: Boolean,
     val year: String,
     val courseId: Int,
-    val roomId: Int,
+    val roomId: Int?,
     val users: List<UserConRol>,
     val timeTable: List<DataRoomTimeTable>,
     var cantidad: Int

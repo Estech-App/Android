@@ -24,6 +24,7 @@ import java.util.Locale
 import java.util.TimeZone
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.estechapp.data.models.DataRoomModel
 import com.example.estechapp.data.models.DataTimeTableResponse
 import com.example.estechapp.ui.adapter.HorarioAdapter
 import com.example.estechapp.ui.adapter.TutoriasHotAdapter
@@ -35,6 +36,8 @@ class FichajeFragment : Fragment() {
     private lateinit var adapter2: HorarioAdapter
 
     private lateinit var adapter3: HorarioAdapter
+
+    private lateinit var roomNames: Map<Int, String?>
 
     private val viewModel by viewModels<MyViewModel> {
         MyViewModel.MyViewModelFactory(requireContext())
@@ -75,6 +78,8 @@ class FichajeFragment : Fragment() {
         val recyclerView3 = binding.recyclerViewHorario2
         val llm3 = LinearLayoutManager(requireContext())
         recyclerView3.layoutManager = llm3
+
+        viewModel.getRoomList("Bearer $token")
 
         viewModel.getMentoringTeacher("Bearer $token", id)
 
@@ -404,60 +409,71 @@ class FichajeFragment : Fragment() {
             }
         })
 
-        //Esto es para recibir las tutorias y pasarselo al adaptador.
-        viewModel.liveDataMentoringList.observe(viewLifecycleOwner, Observer { it ->
-            if (it != null) {
-                val calendar = Calendar.getInstance()
-                // La zona horaria se establece a la del sistema por defecto
-                val tz = TimeZone.getDefault()
-                calendar.timeZone = tz
-                // Asegúrate de que el calendario comienza a las 00:00:00
-                calendar.set(Calendar.HOUR_OF_DAY, 0)
-                calendar.set(Calendar.MINUTE, 0)
-                calendar.set(Calendar.SECOND, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
+        viewModel.liveDataRoomAndMentoring.observe(viewLifecycleOwner, Observer { pair ->
+            val roomList = pair.first
+            val mentoringList = pair.second
 
-                val dateFormat =
-                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
-                // La zona horaria se establece a la del sistema por defecto
-                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+            roomNames =
+                roomList?.associateBy({ it.id }, { it.id?.run { it.name } ?: null }) ?: emptyMap()
 
-                val editor = pref.edit()
-                editor.putBoolean("student", false)
-                editor.commit()
+            var mentoringModel = ArrayList<DataRoomModel>()
 
-                //Aqui con el roomId saco el nombre del aula y solo muestra los APPROVED o MODIFIED.
-                val filteredMentorings = it.filter {
-                    if (it.roomId == null) {
-                        it.roomName = null
-                    } else {
-                        viewModel.getRoomId("Bearer $token", it.roomId)
-                        it.roomName = pref.getString("room", "")!!
-                    }
-                    it.studentAndroid = pref.getBoolean("student", false)
-                    val mentoringCalendar = Calendar.getInstance()
-                    mentoringCalendar.timeZone = tz
-                    val start = dateFormat.parse(it.start)
-                    mentoringCalendar.time = start
-
-                    val mentoringYear = mentoringCalendar.get(Calendar.YEAR)
-                    val mentoringMonth = mentoringCalendar.get(Calendar.MONTH)
-                    val mentoringDay = mentoringCalendar.get(Calendar.DAY_OF_MONTH)
-
-                    //Esto hace que solo muestre las tutorias approved o modified que sean hoy.
-                    val isToday = mentoringYear == calendar.get(Calendar.YEAR) &&
-                            mentoringMonth == calendar.get(Calendar.MONTH) &&
-                            mentoringDay == calendar.get(Calendar.DAY_OF_MONTH)
-
-                    val isStatusValid = it.status == "APPROVED" || it.status == "MODIFIED"
-
-                    isToday && isStatusValid
-                }
-
-                val adapter = TutoriasHotAdapter(filteredMentorings)
-                recyclerView.adapter = adapter
-
+            val ahora = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
             }
+
+            val formato =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+
+            for (mentoring in mentoringList) {
+                if (mentoring.roomId == null) {
+                    mentoringModel.add(DataRoomModel(null, null))
+                } else {
+                    mentoringModel.add(DataRoomModel(mentoring.roomId, null))
+                }
+            }
+
+            for (mentoring in mentoringModel) {
+                if (mentoring.roomId == null) {
+                    mentoring.roomName = null
+                } else {
+                    val roomName = roomNames[mentoring.roomId]
+                    if (roomName != null) {
+                        mentoring.roomName = roomName
+                    }
+                }
+            }
+
+            for (i in mentoringList.indices) {
+                if (mentoringModel[i].roomName == null) {
+                    mentoringList[i].roomName = null
+                } else {
+                    mentoringList[i].roomName = mentoringModel[i].roomName
+                }
+            }
+
+            //Aqui si es pending se va a PendientesAdapter
+            //Y si es approved o modified se van a AsignadasAdapter
+            val pendientes = mentoringList.filter {
+                it.status == "PENDING" && (formato.parse(it.start)
+                    .equals(ahora.time) || formato.parse(it.start).after(ahora.time))
+            }
+            val otras = mentoringList.filter {
+                (it.status == "APPROVED" || it.status == "MODIFIED") && (formato.parse(it.start)
+                    .equals(ahora.time) || formato.parse(it.start).after(ahora.time))
+            }
+
+            // Ordena las listas por la fecha de inicio
+            val pendientesOrdenadas = pendientes.sortedBy { formato.parse(it.start) }
+            val otrasOrdenadas = otras.sortedBy { formato.parse(it.start) }
+
+            // Asigna las listas ordenadas al adaptador
+            val adapter = TutoriasHotAdapter(otrasOrdenadas)
+            recyclerView.adapter = adapter
+
         })
 
         viewModel.liveDataGroupUserModuleTimeTable.observe(viewLifecycleOwner, Observer {
@@ -475,7 +491,10 @@ class FichajeFragment : Fragment() {
             for (timeTable in TimeTableList) {
                 for (grupo in GroupList) {
                     for (modulo in ModuleList) {
-                        if (timeTable.schoolGroupId == grupo.id && timeTable.moduleId == modulo.id && modulo.usersName.contains(user) && timeTable.weekday == hoy.toString()) {
+                        if (timeTable.schoolGroupId == grupo.id && timeTable.moduleId == modulo.id && modulo.usersName.contains(
+                                user
+                            ) && timeTable.weekday == hoy.toString()
+                        ) {
                             timeTable.groupName = grupo.name
                             timeTable.moduleName = modulo.name
                             if (grupo.evening == false) {
@@ -496,15 +515,6 @@ class FichajeFragment : Fragment() {
 
             adapter3 = HorarioAdapter(horarioTarde)
             recyclerView3.adapter = adapter3
-        })
-
-        //Esto es para pasarle el roomId y sacar el nombre del aula.
-        viewModel.liveDataRoom.observe(viewLifecycleOwner, Observer { it ->
-            if (it != null) {
-                val editor = pref.edit()
-                editor.putString("room", it.name)
-                editor.commit()
-            }
         })
     }
 
