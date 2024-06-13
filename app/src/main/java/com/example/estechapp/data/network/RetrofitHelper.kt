@@ -13,7 +13,7 @@ object RetrofitHelper {
         if (retrofitService == null) {
             val retrofit = Retrofit.Builder()
                 //Aqui tengo que poner la ip de mi equipo.
-                .baseUrl("http://192.168.1.51:8080/")
+                .baseUrl("http://192.168.74.3:8080/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
 

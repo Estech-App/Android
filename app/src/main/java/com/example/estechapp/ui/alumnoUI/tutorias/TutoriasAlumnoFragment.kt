@@ -27,6 +27,7 @@ import com.example.estechapp.data.models.DataRoomModel
 import com.example.estechapp.databinding.FragmentTutoriasAlumnoBinding
 import com.example.estechapp.ui.MyViewModel
 import com.example.estechapp.ui.adapter.TutoriasAsignadasAdapterAlumno
+import com.example.estechapp.ui.adapter.TutoriasHotAdapter
 import com.example.estechapp.ui.adapter.TutoriasPendientesAdapterAlumno
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -269,9 +270,13 @@ class TutoriasAlumnoFragment : Fragment() {
                     .equals(ahora.time) || formato.parse(it.start).after(ahora.time))
             }
 
-            adapter = TutoriasPendientesAdapterAlumno(pendientes)
+            // Ordena las listas por la fecha de inicio
+            val pendientesOrdenadas = pendientes.sortedBy { formato.parse(it.start) }
+            val otrasOrdenadas = otras.sortedBy { formato.parse(it.start) }
+
+            adapter = TutoriasPendientesAdapterAlumno(pendientesOrdenadas)
             recyclerView2.adapter = adapter
-            adapter2 = TutoriasAsignadasAdapterAlumno(otras)
+            adapter2 = TutoriasAsignadasAdapterAlumno(otrasOrdenadas)
             recyclerView.adapter = adapter2
             adapter.notifyDataSetChanged()
             adapter2.notifyDataSetChanged()
